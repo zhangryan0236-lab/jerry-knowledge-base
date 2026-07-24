@@ -1,0 +1,22 @@
+{
+  "id": "conv-1784196507919-24jk1w8to",
+  "providerId": "claude",
+  "title": "Design learning flow from Douyin for AI content",
+  "titleGenerationStatus": "success",
+  "createdAt": 1784196507919,
+  "updatedAt": 1784430788472,
+  "lastResponseAt": 1784357895783,
+  "sessionId": null,
+  "selectedModel": "claude-code/deepseek-v4-pro",
+  "currentNote": "如何进行输入？/抖音视频如何精细看.md",
+  "usage": {
+    "model": "deepseek-v4-pro",
+    "inputTokens": 38756,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 3200,
+    "contextWindow": 200000,
+    "contextWindowIsAuthoritative": true,
+    "contextTokens": 41956,
+    "percentage": 21
+  }
+}

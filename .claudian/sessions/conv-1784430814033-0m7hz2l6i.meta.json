@@ -1,0 +1,22 @@
+{
+  "id": "conv-1784430814033-0m7hz2l6i",
+  "providerId": "claude",
+  "title": "Reorganize repository based on article",
+  "titleGenerationStatus": "success",
+  "createdAt": 1784430814033,
+  "updatedAt": 1784431098330,
+  "lastResponseAt": 1784431098326,
+  "sessionId": null,
+  "selectedModel": "claude-code/deepseek-v4-pro",
+  "currentNote": "Karpathy/Karpathy wiki文档.md",
+  "usage": {
+    "model": "deepseek-v4-pro",
+    "inputTokens": 3961,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 66944,
+    "contextWindow": 200000,
+    "contextWindowIsAuthoritative": true,
+    "contextTokens": 70905,
+    "percentage": 35
+  }
+}

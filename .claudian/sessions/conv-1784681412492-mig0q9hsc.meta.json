@@ -1,0 +1,25 @@
+{
+  "id": "conv-1784681412492-mig0q9hsc",
+  "providerId": "claude",
+  "title": "<think>\nThe user's request is \"帮我回答这个问题\" which ...",
+  "titleGenerationStatus": "success",
+  "createdAt": 1784681412492,
+  "updatedAt": 1784681975787,
+  "lastResponseAt": 1784681921724,
+  "sessionId": "6a016ecd-ae23-422f-b2a4-21a3ac8b974a",
+  "selectedModel": "sonnet",
+  "providerState": {
+    "providerSessionId": "6a016ecd-ae23-422f-b2a4-21a3ac8b974a"
+  },
+  "currentNote": "inbox/Thinking.md",
+  "usage": {
+    "model": "sonnet",
+    "inputTokens": 197,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 65536,
+    "contextWindow": 200000,
+    "contextWindowIsAuthoritative": true,
+    "contextTokens": 65733,
+    "percentage": 33
+  }
+}

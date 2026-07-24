@@ -1,0 +1,11 @@
+{
+  "id": "conv-1784517288677-s6hsawkxm",
+  "providerId": "claude",
+  "title": "你好",
+  "titleGenerationStatus": "pending",
+  "createdAt": 1784517288677,
+  "updatedAt": 1784517304287,
+  "sessionId": null,
+  "selectedModel": "haiku",
+  "currentNote": "raw/vibecoding-笔记/Agent开发实战.md"
+}

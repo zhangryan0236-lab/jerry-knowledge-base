@@ -1,0 +1,24 @@
+{
+  "id": "conv-1784632077144-7cn225ium",
+  "providerId": "claude",
+  "title": "<think>\nThe user is asking to see what skills t...",
+  "titleGenerationStatus": "success",
+  "createdAt": 1784632077144,
+  "updatedAt": 1784681982691,
+  "lastResponseAt": 1784632728250,
+  "sessionId": "2737be16-57b3-4b4a-a22b-dd8d53b0f33c",
+  "selectedModel": "sonnet",
+  "providerState": {
+    "providerSessionId": "2737be16-57b3-4b4a-a22b-dd8d53b0f33c"
+  },
+  "usage": {
+    "model": "sonnet",
+    "inputTokens": 261,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 138496,
+    "contextWindow": 200000,
+    "contextWindowIsAuthoritative": true,
+    "contextTokens": 138757,
+    "percentage": 69
+  }
+}

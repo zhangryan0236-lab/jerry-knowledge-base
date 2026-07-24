@@ -1,0 +1,24 @@
+{
+  "id": "conv-1784517373183-io3ig9t02",
+  "providerId": "claude",
+  "title": "Explain response latency",
+  "titleGenerationStatus": "success",
+  "createdAt": 1784517373183,
+  "updatedAt": 1784518714902,
+  "lastResponseAt": 1784517613150,
+  "sessionId": "1cd5260b-3e50-44b7-9d6e-56ed5bfddcc2",
+  "selectedModel": "haiku",
+  "providerState": {
+    "providerSessionId": "1cd5260b-3e50-44b7-9d6e-56ed5bfddcc2"
+  },
+  "usage": {
+    "model": "haiku",
+    "inputTokens": 5894,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 25344,
+    "contextWindow": 200000,
+    "contextTokens": 31238,
+    "percentage": 16,
+    "contextWindowIsAuthoritative": true
+  }
+}

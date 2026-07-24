@@ -1,0 +1,21 @@
+{
+  "id": "conv-1784512780522-bp6u6iri9",
+  "providerId": "claude",
+  "title": "Explain React hooks usage",
+  "titleGenerationStatus": "success",
+  "createdAt": 1784512780522,
+  "updatedAt": 1784517226115,
+  "lastResponseAt": 1784513765110,
+  "sessionId": null,
+  "selectedModel": "claude-code/deepseek-v4-pro",
+  "currentNote": "raw/vibecoding-笔记/Agent开发实战.md",
+  "usage": {
+    "model": "deepseek-v4-flash",
+    "inputTokens": 761,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 37888,
+    "contextWindow": 300000,
+    "contextTokens": 38649,
+    "percentage": 13
+  }
+}

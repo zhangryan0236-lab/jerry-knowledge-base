@@ -1,0 +1,24 @@
+{
+  "id": "conv-1784682056957-0xuom8ff3",
+  "providerId": "claude",
+  "title": "<think>\nThe user is asking to upload TikTok vid...",
+  "titleGenerationStatus": "success",
+  "createdAt": 1784682056957,
+  "updatedAt": 1784682682359,
+  "lastResponseAt": 1784682277009,
+  "sessionId": "f24662c1-01e5-442e-9e73-66c3bf67d842",
+  "selectedModel": "sonnet",
+  "providerState": {
+    "providerSessionId": "f24662c1-01e5-442e-9e73-66c3bf67d842"
+  },
+  "usage": {
+    "model": "sonnet",
+    "inputTokens": 600,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 54272,
+    "contextWindow": 200000,
+    "contextWindowIsAuthoritative": true,
+    "contextTokens": 54872,
+    "percentage": 27
+  }
+}

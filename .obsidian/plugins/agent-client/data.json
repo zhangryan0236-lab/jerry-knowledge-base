@@ -1,0 +1,130 @@
+{
+  "claude": {
+    "id": "claude-code-acp",
+    "displayName": "Claude Code",
+    "apiKeySecretId": "",
+    "command": "claude-agent-acp",
+    "args": [],
+    "env": []
+  },
+  "codex": {
+    "id": "codex-acp",
+    "displayName": "Codex",
+    "apiKeySecretId": "",
+    "command": "codex-acp",
+    "args": [],
+    "env": []
+  },
+  "gemini": {
+    "id": "gemini-cli",
+    "displayName": "Gemini CLI",
+    "apiKeySecretId": "",
+    "command": "gemini",
+    "args": [
+      "--experimental-acp"
+    ],
+    "env": []
+  },
+  "customAgents": [
+    {
+      "id": "opencode",
+      "displayName": "OpenCode",
+      "command": "C:\\Users\\jerry\\AppData\\Roaming\\npm\\opencode.cmd",
+      "args": [
+        "acp"
+      ],
+      "env": []
+    }
+  ],
+  "defaultAgentId": "claude-code-acp",
+  "autoAllowPermissions": false,
+  "autoMentionActiveNote": true,
+  "enableSystemNotifications": true,
+  "promptInjection": {
+    "enabled": true,
+    "latex": true,
+    "wikiLinks": true,
+    "tables": true
+  },
+  "debugMode": false,
+  "nodePath": "C:\\Program Files\\nodejs\\node.exe",
+  "exportSettings": {
+    "defaultFolder": "Agent Client",
+    "filenameTemplate": "agent_client_{date}_{time}",
+    "autoExportOnNewChat": false,
+    "autoExportOnCloseChat": false,
+    "openFileAfterExport": true,
+    "includeImages": true,
+    "imageLocation": "obsidian",
+    "imageCustomFolder": "Agent Client",
+    "frontmatterTag": "agent-client"
+  },
+  "windowsWslMode": false,
+  "sendMessageShortcut": "enter",
+  "chatViewLocation": "right-tab",
+  "displaySettings": {
+    "autoCollapseDiffs": false,
+    "diffCollapseThreshold": 10,
+    "maxNoteLength": 10000,
+    "maxSelectionLength": 10000,
+    "showEmojis": true,
+    "fontSize": null
+  },
+  "savedSessions": [
+    {
+      "sessionId": "ses_09c18d7ecffeph2QpIYy9evI7w",
+      "agentId": "opencode",
+      "cwd": "D:\\Jerry的知识库",
+      "title": "帮我挖掘一下我的这些主要矛盾和核心目标，有什么不知道的你可以问我",
+      "createdAt": "2026-07-15T03:53:18.962Z",
+      "updatedAt": "2026-07-15T06:32:20.404Z"
+    },
+    {
+      "sessionId": "ses_09ed1f883ffeVnvGsO7W3r1ByX",
+      "agentId": "opencode",
+      "cwd": "D:\\Jerry的知识库",
+      "title": "什么是缓存命中和未命中，简单用大白话给我，以及举例子",
+      "createdAt": "2026-07-14T15:46:44.582Z",
+      "updatedAt": "2026-07-14T15:46:44.583Z"
+    },
+    {
+      "sessionId": "ses_09f04742dffehGby5anNa9Rs5T",
+      "agentId": "opencode",
+      "cwd": "D:\\Jerry的知识库",
+      "title": "这三个概念是什么意思",
+      "createdAt": "2026-07-14T14:42:09.891Z",
+      "updatedAt": "2026-07-14T14:42:09.892Z"
+    },
+    {
+      "sessionId": "ses_09f600cdbffeJIH7CBBULlnLUE",
+      "agentId": "opencode",
+      "cwd": "D:\\Jerry的知识库",
+      "title": "你好",
+      "createdAt": "2026-07-14T12:35:27.043Z",
+      "updatedAt": "2026-07-14T12:57:27.553Z"
+    }
+  ],
+  "lastUsedModels": {
+    "opencode": "opencode-go/deepseek-v4-pro"
+  },
+  "lastUsedModes": {},
+  "lastUsedConfigOptions": {
+    "opencode": {
+      "effort": "medium"
+    }
+  },
+  "enableFloatingChat": true,
+  "floatingButtonImage": "",
+  "floatingWindowSize": {
+    "width": 400,
+    "height": 500
+  },
+  "floatingWindowPosition": {
+    "x": 990,
+    "y": 302
+  },
+  "floatingButtonPosition": {
+    "x": 0,
+    "y": 779
+  }
+}

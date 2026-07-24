@@ -1,0 +1,10 @@
+{
+  "id": "obsidian-custom-frames",
+  "name": "Custom Frames",
+  "version": "2.4.7",
+  "minAppVersion": "0.15.0",
+  "description": "A plugin that turns web apps into panes using iframes with custom styling.",
+  "author": "Ellpeck",
+  "authorUrl": "https://ellpeck.de",
+  "isDesktopOnly": false
+}

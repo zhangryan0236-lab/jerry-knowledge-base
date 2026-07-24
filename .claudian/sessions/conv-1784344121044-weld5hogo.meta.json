@@ -1,0 +1,22 @@
+{
+  "id": "conv-1784344121044-weld5hogo",
+  "providerId": "claude",
+  "title": "Explain Claude benefits for vibecoding",
+  "titleGenerationStatus": "success",
+  "createdAt": 1784344121045,
+  "updatedAt": 1784356293717,
+  "lastResponseAt": 1784355575934,
+  "sessionId": null,
+  "selectedModel": "claude-code/deepseek-v4-pro",
+  "currentNote": "vibecoding学习/环境搭建.md",
+  "usage": {
+    "model": "deepseek-v4-pro",
+    "inputTokens": 227061,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 71680,
+    "contextWindow": 200000,
+    "contextWindowIsAuthoritative": true,
+    "contextTokens": 298741,
+    "percentage": 100
+  }
+}

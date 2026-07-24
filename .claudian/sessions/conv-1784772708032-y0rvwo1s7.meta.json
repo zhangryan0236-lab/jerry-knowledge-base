@@ -1,0 +1,24 @@
+{
+  "id": "conv-1784772708032-y0rvwo1s7",
+  "providerId": "claude",
+  "title": "<think>\nThe user is asking for help creating a ...",
+  "titleGenerationStatus": "success",
+  "createdAt": 1784772708033,
+  "updatedAt": 1784789104298,
+  "lastResponseAt": 1784789104298,
+  "sessionId": "c012ee18-f41c-4793-947b-32f0a1cb26af",
+  "selectedModel": "sonnet",
+  "providerState": {
+    "providerSessionId": "c012ee18-f41c-4793-947b-32f0a1cb26af"
+  },
+  "usage": {
+    "model": "sonnet",
+    "inputTokens": 37742,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 0,
+    "contextWindow": 200000,
+    "contextWindowIsAuthoritative": true,
+    "contextTokens": 37742,
+    "percentage": 19
+  }
+}

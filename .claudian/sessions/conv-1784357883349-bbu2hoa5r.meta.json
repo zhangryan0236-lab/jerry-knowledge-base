@@ -1,0 +1,22 @@
+{
+  "id": "conv-1784357883349-bbu2hoa5r",
+  "providerId": "claude",
+  "title": "Respond to greeting",
+  "titleGenerationStatus": "success",
+  "createdAt": 1784357883349,
+  "updatedAt": 1784367874662,
+  "lastResponseAt": 1784367851931,
+  "sessionId": null,
+  "selectedModel": "claude-code/deepseek-v4-pro",
+  "currentNote": "vibecoding学习/理解检测报告-Node.js-Python-Git-2026-07-18.md",
+  "usage": {
+    "model": "deepseek-v4-pro",
+    "inputTokens": 37,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 102400,
+    "contextWindow": 200000,
+    "contextWindowIsAuthoritative": true,
+    "contextTokens": 102437,
+    "percentage": 51
+  }
+}

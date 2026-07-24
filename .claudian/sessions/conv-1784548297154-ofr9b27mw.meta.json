@@ -1,0 +1,12 @@
+{
+  "id": "conv-1784548297154-ofr9b27mw",
+  "providerId": "claude",
+  "title": "Respond to greeting",
+  "titleGenerationStatus": "success",
+  "createdAt": 1784548297154,
+  "updatedAt": 1784548466588,
+  "lastResponseAt": 1784548390811,
+  "sessionId": null,
+  "selectedModel": "haiku",
+  "currentNote": "01-C语言概述.pdf"
+}

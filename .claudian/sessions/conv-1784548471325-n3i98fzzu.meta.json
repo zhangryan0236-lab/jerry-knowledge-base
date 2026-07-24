@@ -1,0 +1,25 @@
+{
+  "id": "conv-1784548471325-n3i98fzzu",
+  "providerId": "claude",
+  "title": "Start new conversation",
+  "titleGenerationStatus": "success",
+  "createdAt": 1784548471325,
+  "updatedAt": 1784549260293,
+  "lastResponseAt": 1784549260293,
+  "sessionId": "ea5cd2e8-6310-426e-9ec0-83c3899a8b8a",
+  "selectedModel": "opus",
+  "providerState": {
+    "providerSessionId": "ea5cd2e8-6310-426e-9ec0-83c3899a8b8a"
+  },
+  "currentNote": "01-C语言概述.pdf",
+  "usage": {
+    "model": "opus",
+    "inputTokens": 30727,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 0,
+    "contextWindow": 200000,
+    "contextWindowIsAuthoritative": true,
+    "contextTokens": 30727,
+    "percentage": 15
+  }
+}

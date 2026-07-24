@@ -1,0 +1,22 @@
+{
+  "id": "conv-1784218942573-e13u15zlj",
+  "providerId": "claude",
+  "title": "Refine methodology for precision and actionability",
+  "titleGenerationStatus": "success",
+  "createdAt": 1784218942574,
+  "updatedAt": 1784255398477,
+  "lastResponseAt": 1784219004225,
+  "sessionId": null,
+  "selectedModel": "claude-code/deepseek-v4-pro",
+  "currentNote": "如何进行输入？/抖音视频如何精细看.md",
+  "usage": {
+    "model": "deepseek-v4-pro",
+    "inputTokens": 3615,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 26496,
+    "contextWindow": 200000,
+    "contextWindowIsAuthoritative": true,
+    "contextTokens": 30111,
+    "percentage": 15
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "id": "conv-1784427410790-3qb8r9oyw",
+  "providerId": "claude",
+  "title": "List available skills",
+  "titleGenerationStatus": "success",
+  "createdAt": 1784427410790,
+  "updatedAt": 1784517231815,
+  "lastResponseAt": 1784449743249,
+  "sessionId": null,
+  "selectedModel": "claude-code/deepseek-v4-pro",
+  "usage": {
+    "model": "deepseek-v4-pro",
+    "inputTokens": 79142,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 6400,
+    "contextWindow": 200000,
+    "contextWindowIsAuthoritative": true,
+    "contextTokens": 85542,
+    "percentage": 43
+  }
+}

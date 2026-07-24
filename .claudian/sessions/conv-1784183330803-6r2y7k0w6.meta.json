@@ -1,0 +1,22 @@
+{
+  "id": "conv-1784183330803-6r2y7k0w6",
+  "providerId": "claude",
+  "title": "Analyze article and plan learning strategy",
+  "titleGenerationStatus": "success",
+  "createdAt": 1784183330803,
+  "updatedAt": 1784430789643,
+  "lastResponseAt": 1784183756600,
+  "sessionId": null,
+  "selectedModel": "claude-code/deepseek-v4-pro",
+  "currentNote": "如何进行输入？/我为什么学习obsidian和AI.md",
+  "usage": {
+    "model": "deepseek-v4-pro",
+    "inputTokens": 842,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 29568,
+    "contextWindow": 200000,
+    "contextWindowIsAuthoritative": true,
+    "contextTokens": 30410,
+    "percentage": 15
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "id": "conv-1784517252496-5wo65k5wi",
+  "providerId": "claude",
+  "title": "Explain hooks configuration and usage",
+  "titleGenerationStatus": "success",
+  "createdAt": 1784517252496,
+  "updatedAt": 1784519023937,
+  "lastResponseAt": 1784518960539,
+  "sessionId": "b79dad3e-1d0d-4fc5-9f6c-c3d1dd52a4cf",
+  "selectedModel": "claude-fable-5",
+  "providerState": {
+    "providerSessionId": "b79dad3e-1d0d-4fc5-9f6c-c3d1dd52a4cf"
+  },
+  "currentNote": "raw/vibecoding-笔记/Agent开发实战.md",
+  "usage": {
+    "model": "claude-fable-5",
+    "inputTokens": 30115,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 0,
+    "contextWindow": 1000000,
+    "contextWindowIsAuthoritative": false,
+    "contextTokens": 30115,
+    "percentage": 3
+  }
+}

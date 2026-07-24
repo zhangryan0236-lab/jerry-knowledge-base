@@ -1,0 +1,22 @@
+{
+  "id": "conv-1784343194124-ydnyooyrp",
+  "providerId": "claude",
+  "title": "Summarize content and build knowledge graph",
+  "titleGenerationStatus": "success",
+  "createdAt": 1784343194124,
+  "updatedAt": 1784344102628,
+  "lastResponseAt": 1784343321152,
+  "sessionId": null,
+  "selectedModel": "claude-code/deepseek-v4-pro",
+  "currentNote": "Clippings/Bilibili/黑马Vibe Coding零基础入门，vibecoding项目，涵盖Claude Code、Cursor、Codex、SDD、LangChain、Agent开发-P1-00-课程导学.md",
+  "usage": {
+    "model": "deepseek-v4-pro",
+    "inputTokens": 1251,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 28160,
+    "contextWindow": 200000,
+    "contextWindowIsAuthoritative": true,
+    "contextTokens": 29411,
+    "percentage": 15
+  }
+}

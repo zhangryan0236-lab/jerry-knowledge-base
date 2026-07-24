@@ -1,0 +1,102 @@
+{
+  "userName": "",
+  "permissionMode": "yolo",
+  "model": "haiku",
+  "thinkingBudget": "off",
+  "effortLevel": "high",
+  "serviceTier": "default",
+  "enableAutoTitleGeneration": true,
+  "titleGenerationModel": "",
+  "excludedTags": [],
+  "mediaFolder": "",
+  "systemPrompt": "",
+  "persistentExternalContextPaths": [],
+  "sharedEnvironmentVariables": " \"ANTHROPIC_BASE_URL\": \"https://opencode.ai/zen/go\",\n    \"ANTHROPIC_AUTH_TOKEN\": \"sk-YnAfa9DQSt03zoG0a2QLS9iPgR8QQRN2RMpc6lt5hr7CcX7ceA7ozc9u2Rd3edGe\",\n    \"ANTHROPIC_MODEL\": \"deepseek-v4-flash\",\n    \"ANTHROPIC_DEFAULT_HAIKU_MODEL\": \"minimax-m3\",\n    \"ANTHROPIC_DEFAULT_SONNET_MODEL\": \"deepseek-v4-pro\",\n    \"ANTHROPIC_DEFAULT_OPUS_MODEL\": \"minimax-m3\",\n    \"ANTHROPIC_DEFAULT_SONNET_MODEL_NAME\": \"deepseek-v4-pro\",\n    \"ANTHROPIC_DEFAULT_OPUS_MODEL_NAME\": \"minimax-m3\",\n    \"ANTHROPIC_DEFAULT_FABLE_MODEL\": \"deepseek-v4-flash\",\n    \"ANTHROPIC_DEFAULT_FABLE_MODEL_NAME\": \"deepseek-v4-flash\",\n    \"ANTHROPIC_DEFAULT_HAIKU_MODEL_NAME\": \"minimax-m3\"",
+  "envSnippets": [],
+  "customContextLimits": {
+    "deepseek-v4-pro": 400000,
+    "deepseek-v4-flash": 300000
+  },
+  "customModelAliases": {
+    "deepseek-v4-pro": "deepseekpro",
+    "deepseek-v4-flash": "deepseekflash"
+  },
+  "keyboardNavigation": {
+    "scrollUpKey": "w",
+    "scrollDownKey": "s",
+    "focusInputKey": "i"
+  },
+  "requireCommandOrControlEnterToSend": false,
+  "locale": "zh-CN",
+  "providerConfigs": {
+    "claude": {
+      "safeMode": "acceptEdits",
+      "cliPath": "",
+      "cliPathsByHost": {},
+      "loadUserSettings": true,
+      "enableChrome": false,
+      "enableBangBash": false,
+      "customModels": "",
+      "lastModel": "haiku",
+      "environmentVariables": " \"ANTHROPIC_BASE_URL\": \"https://opencode.ai/zen/go\",\n    \"ANTHROPIC_AUTH_TOKEN\": \"sk-YnAfa9DQSt03zoG0a2QLS9iPgR8QQRN2RMpc6lt5hr7CcX7ceA7ozc9u2Rd3edGe\",\n    \"ANTHROPIC_MODEL\": \"deepseek-v4-flash\",\n    \"ANTHROPIC_DEFAULT_HAIKU_MODEL\": \"minimax-m3\",\n    \"ANTHROPIC_DEFAULT_SONNET_MODEL\": \"deepseek-v4-pro\",\n    \"ANTHROPIC_DEFAULT_OPUS_MODEL\": \"minimax-m3\",\n    \"ANTHROPIC_DEFAULT_SONNET_MODEL_NAME\": \"deepseek-v4-pro\",\n    \"ANTHROPIC_DEFAULT_OPUS_MODEL_NAME\": \"minimax-m3\",\n    \"ANTHROPIC_DEFAULT_FABLE_MODEL\": \"deepseek-v4-flash\",\n    \"ANTHROPIC_DEFAULT_FABLE_MODEL_NAME\": \"deepseek-v4-flash\",\n    \"ANTHROPIC_DEFAULT_HAIKU_MODEL_NAME\": \"minimax-m3\"",
+      "environmentHash": ""
+    },
+    "codex": {
+      "enabled": false,
+      "safeMode": "workspace-write",
+      "cliPath": "",
+      "cliPathsByHost": {},
+      "customModels": "",
+      "modelAliases": {},
+      "visibleModels": null,
+      "reasoningSummary": "detailed",
+      "environmentVariables": "",
+      "environmentHash": "",
+      "installationMethodsByHost": {},
+      "wslDistroOverridesByHost": {}
+    },
+    "opencode": {
+      "cliPath": "",
+      "cliPathsByHost": {},
+      "enabled": false,
+      "environmentHash": "",
+      "environmentVariables": "OPENCODE_ENABLE_EXA=1",
+      "modelAliases": {},
+      "preferredThinkingByModel": {},
+      "selectedMode": "",
+      "thinkingOptionsByModel": {},
+      "visibleModels": []
+    },
+    "pi": {
+      "cliPath": "",
+      "cliPathsByHost": {},
+      "discoveredModels": [],
+      "enabled": false,
+      "environmentHash": "",
+      "environmentVariables": "",
+      "modelAliases": {},
+      "preferredThinkingByModel": {},
+      "toolMode": "all",
+      "visibleModels": []
+    }
+  },
+  "settingsProvider": "claude",
+  "savedProviderModel": {
+    "claude": "haiku"
+  },
+  "savedProviderEffort": {
+    "claude": "high"
+  },
+  "savedProviderServiceTier": {},
+  "savedProviderThinkingBudget": {},
+  "savedProviderPermissionMode": {
+    "claude": "yolo"
+  },
+  "lastCustomModel": "claude-code/deepseek-v4-pro",
+  "maxTabs": 3,
+  "enableAutoScroll": true,
+  "deferMathRenderingDuringStreaming": true,
+  "expandFileEditsByDefault": false,
+  "chatViewPlacement": "right-sidebar",
+  "hiddenProviderCommands": {}
+}

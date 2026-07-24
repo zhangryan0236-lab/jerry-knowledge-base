@@ -1,0 +1,25 @@
+{
+  "id": "conv-1784449743343-dfjfpap37",
+  "providerId": "claude",
+  "title": "Greet user in Chinese",
+  "titleGenerationStatus": "success",
+  "createdAt": 1784449743343,
+  "updatedAt": 1784517237245,
+  "lastResponseAt": 1784516611117,
+  "sessionId": "b90bdb5f-d3b1-4905-821c-73778c5281dd",
+  "selectedModel": "sonnet",
+  "providerState": {
+    "providerSessionId": "b90bdb5f-d3b1-4905-821c-73778c5281dd"
+  },
+  "currentNote": "raw/vibecoding-笔记/Agent开发实战.md",
+  "usage": {
+    "model": "sonnet",
+    "inputTokens": 105,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 31872,
+    "contextWindow": 200000,
+    "contextWindowIsAuthoritative": true,
+    "contextTokens": 31977,
+    "percentage": 16
+  }
+}

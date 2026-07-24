@@ -1,0 +1,21 @@
+{
+  "id": "conv-1784103808888-knqunt5lz",
+  "providerId": "claude",
+  "title": "Optimize internalization and verification workflow",
+  "titleGenerationStatus": "success",
+  "createdAt": 1784103808889,
+  "updatedAt": 1784167559184,
+  "lastResponseAt": 1784167554260,
+  "sessionId": null,
+  "selectedModel": "claude-code/deepseek-v4-pro",
+  "usage": {
+    "model": "deepseek-v4-pro",
+    "inputTokens": 25736,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 3072,
+    "contextWindow": 200000,
+    "contextWindowIsAuthoritative": true,
+    "contextTokens": 28808,
+    "percentage": 14
+  }
+}

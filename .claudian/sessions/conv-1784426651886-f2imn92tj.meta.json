@@ -1,0 +1,22 @@
+{
+  "id": "conv-1784426651886-f2imn92tj",
+  "providerId": "claude",
+  "title": "Summarize this podcast",
+  "titleGenerationStatus": "success",
+  "createdAt": 1784426651886,
+  "updatedAt": 1784427405043,
+  "lastResponseAt": 1784426883272,
+  "sessionId": null,
+  "selectedModel": "claude-code/deepseek-v4-pro",
+  "currentNote": "Clippings/Bilibili/鲁豫对话姜思达：带着「伤疤」奔跑的人，永远炽热地活着 _ 陈鲁豫·慢谈EP21【视频播客】.md",
+  "usage": {
+    "model": "deepseek-v4-pro",
+    "inputTokens": 1020,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 132352,
+    "contextWindow": 200000,
+    "contextWindowIsAuthoritative": true,
+    "contextTokens": 133372,
+    "percentage": 67
+  }
+}

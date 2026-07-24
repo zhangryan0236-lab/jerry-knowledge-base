@@ -1,0 +1,21 @@
+{
+  "id": "conv-1784017322268-xijgeyl0p",
+  "providerId": "claude",
+  "title": "Summarize written files into document",
+  "titleGenerationStatus": "success",
+  "createdAt": 1784017322268,
+  "updatedAt": 1784167565731,
+  "lastResponseAt": 1784167547193,
+  "sessionId": null,
+  "selectedModel": "claude-code/deepseek-v4-pro",
+  "usage": {
+    "model": "deepseek-v4-pro",
+    "inputTokens": 55258,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 3200,
+    "contextWindow": 200000,
+    "contextWindowIsAuthoritative": true,
+    "contextTokens": 58458,
+    "percentage": 29
+  }
+}

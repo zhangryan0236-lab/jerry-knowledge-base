@@ -1,0 +1,21 @@
+{
+  "id": "conv-1784164772179-4i1dhm6we",
+  "providerId": "claude",
+  "title": "Refactor CLAUDE.md into routing table",
+  "titleGenerationStatus": "success",
+  "createdAt": 1784164772180,
+  "updatedAt": 1784167563249,
+  "lastResponseAt": 1784167553305,
+  "sessionId": null,
+  "selectedModel": "claude-code/deepseek-v4-pro",
+  "usage": {
+    "model": "deepseek-v4-pro",
+    "inputTokens": 34325,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 19968,
+    "contextWindow": 200000,
+    "contextWindowIsAuthoritative": true,
+    "contextTokens": 54293,
+    "percentage": 27
+  }
+}

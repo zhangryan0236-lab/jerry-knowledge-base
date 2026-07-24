@@ -1,0 +1,22 @@
+{
+  "id": "conv-1784442685842-p81fyw8hn",
+  "providerId": "claude",
+  "title": "Explain Subagent concept",
+  "titleGenerationStatus": "success",
+  "createdAt": 1784442685842,
+  "updatedAt": 1784514262850,
+  "lastResponseAt": 1784443803470,
+  "sessionId": null,
+  "selectedModel": "claude-code/deepseek-v4-pro",
+  "currentNote": "raw/vibecoding-笔记/Agent开发实战.md",
+  "usage": {
+    "model": "deepseek-v4-pro",
+    "inputTokens": 1046,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 47616,
+    "contextWindow": 200000,
+    "contextWindowIsAuthoritative": true,
+    "contextTokens": 48662,
+    "percentage": 24
+  }
+}

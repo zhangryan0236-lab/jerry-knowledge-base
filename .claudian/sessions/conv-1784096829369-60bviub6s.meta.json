@@ -1,0 +1,22 @@
+{
+  "id": "conv-1784096829369-60bviub6s",
+  "providerId": "claude",
+  "title": "Create SOP and understanding assessment skill",
+  "titleGenerationStatus": "success",
+  "createdAt": 1784096829369,
+  "updatedAt": 1784164772142,
+  "lastResponseAt": 1784164772137,
+  "sessionId": null,
+  "selectedModel": "claude-code/deepseek-v4-pro",
+  "currentNote": "核心目标-主要矛盾/7.15-9.5主要目标.md",
+  "usage": {
+    "model": "deepseek-v4-pro",
+    "inputTokens": 161,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 65920,
+    "contextWindow": 200000,
+    "contextWindowIsAuthoritative": true,
+    "contextTokens": 66081,
+    "percentage": 33
+  }
+}

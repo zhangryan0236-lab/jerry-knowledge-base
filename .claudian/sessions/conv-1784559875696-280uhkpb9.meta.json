@@ -1,0 +1,24 @@
+{
+  "id": "conv-1784559875696-280uhkpb9",
+  "providerId": "claude",
+  "title": "<think>\nThe user is asking to summarize a perso...",
+  "titleGenerationStatus": "success",
+  "createdAt": 1784559875696,
+  "updatedAt": 1784560918057,
+  "lastResponseAt": 1784560918057,
+  "sessionId": "a4fcfca1-7e88-427a-9afb-3d12ce071bfe",
+  "selectedModel": "sonnet",
+  "providerState": {
+    "providerSessionId": "a4fcfca1-7e88-427a-9afb-3d12ce071bfe"
+  },
+  "usage": {
+    "model": "sonnet",
+    "inputTokens": 6629,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 118144,
+    "contextWindow": 200000,
+    "contextWindowIsAuthoritative": true,
+    "contextTokens": 124773,
+    "percentage": 62
+  }
+}

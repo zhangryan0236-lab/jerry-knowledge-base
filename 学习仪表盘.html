@@ -1,0 +1,1862 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>学习仪表盘 · Jerry</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================
+   基础重置
+   ============================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+input, textarea { font: inherit; color: inherit; background: none; border: none; outline: none; }
+ul, ol { list-style: none; }
+
+/* ============================================
+   主题色与字体
+   ============================================ */
+:root {
+  --bg-grad: linear-gradient(135deg, #c4c8d0 0%, #fef5d0 100%);
+  --card-bg: #ffffff;
+  --card-bg-warm: #fefdf7;
+  --card-bg-dark: #1a1a1a;
+  --text: #0a0a0a;
+  --text-muted: #8b8b8b;
+  --text-soft: #6b6b6b;
+  --accent: #f9d849;
+  --accent-deep: #ffd64a;
+  --accent-soft: #fff3b0;
+  --line: #ececec;
+  --shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  --shadow-hover: 0 6px 24px rgba(0, 0, 0, 0.08);
+  --radius: 20px;
+  --radius-sm: 12px;
+  --radius-pill: 999px;
+  --serif: 'DM Serif Display', Georgia, 'Times New Roman', serif;
+  --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+}
+
+body {
+  font-family: var(--sans);
+  color: var(--text);
+  background: var(--bg-grad);
+  background-attachment: fixed;
+  min-height: 100vh;
+  padding: 24px 32px 60px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
+}
+
+/* ============================================
+   顶部导航
+   ============================================ */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: var(--radius-pill);
+  padding: 10px 20px;
+  margin-bottom: 32px;
+  box-shadow: var(--shadow);
+}
+.topbar .logo {
+  font-family: var(--serif);
+  font-size: 24px;
+  letter-spacing: -0.5px;
+  padding: 6px 18px;
+  background: #fff;
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow);
+}
+.topbar nav {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.topbar nav a {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-soft);
+  padding: 8px 16px;
+  border-radius: var(--radius-pill);
+  text-decoration: none;
+  transition: all 0.2s;
+}
+.topbar nav a.active,
+.topbar nav a:hover {
+  background: var(--text);
+  color: #fff;
+}
+.topbar .actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.icon-btn {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: #fff;
+  box-shadow: var(--shadow);
+  color: var(--text);
+  transition: transform 0.2s;
+}
+.icon-btn:hover { transform: translateY(-2px); }
+.icon-btn svg { width: 18px; height: 18px; }
+.avatar {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f9d849, #ffd64a);
+  display: inline-flex; align-items: center; justify-content: center;
+  font-weight: 600; color: #1a1a1a;
+  box-shadow: var(--shadow);
+  font-size: 15px;
+}
+
+/* ============================================
+   主体容器
+   ============================================ */
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* ============================================
+   欢迎区
+   ============================================ */
+.hero {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 28px;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.hero h1 {
+  font-family: var(--serif);
+  font-size: 48px;
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -1px;
+}
+.hero .greeting-time { color: var(--text-muted); font-size: 16px; margin-top: 6px; }
+
+.stat-row {
+  display: flex;
+  gap: 36px;
+  align-items: flex-end;
+}
+.stat-item { text-align: center; }
+.stat-item .num {
+  font-family: var(--serif);
+  font-size: 56px;
+  line-height: 1;
+  letter-spacing: -1.5px;
+}
+.stat-item .num .small-icon {
+  display: inline-block; width: 28px; height: 28px;
+  background: var(--accent); border-radius: 50%;
+  vertical-align: middle; margin-right: 8px;
+  position: relative; top: -4px;
+}
+.stat-item .label {
+  font-size: 13px; color: var(--text-muted);
+  margin-top: 6px;
+}
+
+/* ============================================
+   进度指标条
+   ============================================ */
+.metrics {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+.metric {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: var(--shadow);
+}
+.metric .head {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 14px;
+}
+.metric .name { font-size: 14px; font-weight: 500; color: var(--text); }
+.metric .pct {
+  font-family: var(--serif);
+  font-size: 28px;
+  letter-spacing: -1px;
+}
+.metric .bar {
+  height: 8px; background: var(--line); border-radius: 4px; overflow: hidden;
+  position: relative;
+}
+.metric .fill { height: 100%; background: var(--accent); border-radius: 4px; transition: width 0.6s ease; }
+.metric .fill.hatched {
+  background:
+    repeating-linear-gradient(
+      45deg,
+      #e8e8e8,
+      #e8e8e8 4px,
+      #f5f5f5 4px,
+      #f5f5f5 8px
+    );
+}
+
+/* ============================================
+   卡片网格
+   ============================================ */
+.grid-4 {
+  display: grid;
+  grid-template-columns: 1.05fr 1.4fr 1fr 1.2fr;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+.grid-4-bottom {
+  display: grid;
+  grid-template-columns: 1.2fr 1.4fr 1.1fr 0.9fr;
+  gap: 20px;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: var(--shadow);
+  position: relative;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.card:hover { box-shadow: var(--shadow-hover); }
+.card .card-head {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 16px;
+}
+.card .card-title { font-size: 16px; font-weight: 600; }
+.card .card-title .sub { color: var(--text-muted); font-size: 12px; font-weight: 400; margin-top: 2px; }
+.card .corner-btn {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: #f4f4f4;
+  transition: background 0.2s;
+}
+.card .corner-btn:hover { background: var(--accent); }
+.card .corner-btn svg { width: 14px; height: 14px; }
+
+/* ============================================
+   个人资料卡（带头像）
+   ============================================ */
+.profile {
+  background: linear-gradient(180deg, #fff 0%, #fefdf7 100%);
+}
+.profile .photo {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 14px;
+  background:
+    radial-gradient(circle at 30% 30%, #f9d849 0%, transparent 50%),
+    linear-gradient(135deg, #d4a574 0%, #8b6f47 50%, #5d4429 100%);
+  margin-bottom: 16px;
+  position: relative;
+  overflow: hidden;
+}
+.profile .photo::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(circle at 50% 70%, rgba(255,255,255,0.15) 0%, transparent 50%);
+}
+.profile .name {
+  font-family: var(--serif);
+  font-size: 22px;
+  margin-bottom: 4px;
+}
+.profile .role { font-size: 13px; color: var(--text-muted); margin-bottom: 12px; }
+.profile .badge {
+  display: inline-block;
+  padding: 6px 14px;
+  background: var(--text);
+  color: var(--accent);
+  border-radius: var(--radius-pill);
+  font-family: var(--serif);
+  font-size: 16px;
+  letter-spacing: 0.5px;
+}
+.profile .stats-mini {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+.profile .stats-mini .item { text-align: center; }
+.profile .stats-mini .item .v { font-family: var(--serif); font-size: 20px; }
+.profile .stats-mini .item .l { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+/* ============================================
+   本周学习时长（柱状图）
+   ============================================ */
+.study-chart .total {
+  font-family: var(--serif);
+  font-size: 36px;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.study-chart .total small { font-size: 18px; color: var(--text-muted); }
+.study-chart .label-sub { font-size: 12px; color: var(--text-muted); margin-bottom: 20px; }
+.chart-area {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  height: 140px;
+  padding: 0 8px;
+  position: relative;
+  border-bottom: 1px dashed var(--line);
+}
+.chart-area::before {
+  content: '';
+  position: absolute; left: 0; right: 0; top: 50%;
+  border-top: 1px dashed var(--line);
+}
+.bar-col {
+  flex: 1;
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+  position: relative;
+  height: 100%;
+}
+.bar {
+  width: 10px;
+  background: var(--text);
+  border-radius: 3px;
+  position: relative;
+  transition: height 0.4s ease;
+}
+.bar.today { background: var(--accent); width: 14px; }
+.bar.empty { background: transparent; border: 1px dashed #c8c8c8; }
+.bar-val {
+  position: absolute;
+  top: -22px;
+  font-size: 10px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+.day-labels {
+  display: flex; justify-content: space-between;
+  padding: 8px 8px 0;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+.day-labels span { flex: 1; text-align: center; }
+
+/* ============================================
+   番茄钟
+   ============================================ */
+.pomodoro {
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center;
+}
+.pomo-ring {
+  position: relative;
+  width: 200px; height: 200px;
+  margin: 8px 0 18px;
+}
+.pomo-ring svg { transform: rotate(-90deg); width: 100%; height: 100%; }
+.pomo-ring .bg-ring { fill: none; stroke: #f0f0f0; stroke-width: 8; }
+.pomo-ring .prog-ring {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 8;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.5s linear;
+}
+.pomo-ring .display {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+.pomo-ring .time {
+  font-family: var(--serif);
+  font-size: 44px;
+  line-height: 1;
+  letter-spacing: -1.5px;
+}
+.pomo-ring .mode {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 6px;
+}
+.pomo-controls {
+  display: flex; gap: 12px; align-items: center;
+}
+.pomo-btn {
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  background: var(--text);
+  color: #fff;
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: transform 0.15s, background 0.2s;
+}
+.pomo-btn:hover { transform: scale(1.05); }
+.pomo-btn.secondary { background: #f4f4f4; color: var(--text); }
+.pomo-btn.secondary:hover { background: var(--accent); }
+.pomo-btn svg { width: 18px; height: 18px; }
+.pomo-count {
+  margin-top: 16px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.pomo-count strong { color: var(--text); font-family: var(--serif); font-size: 18px; }
+
+/* ============================================
+   学科进度
+   ============================================ */
+.subjects .pct {
+  position: absolute;
+  top: 22px; right: 60px;
+  font-family: var(--serif);
+  font-size: 22px;
+}
+.subjects .progress-block {
+  margin-top: 8px;
+  display: flex; flex-direction: column; gap: 14px;
+}
+.subject-item {
+  display: flex; flex-direction: column; gap: 6px;
+  position: relative;
+}
+.subject-head {
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 13px;
+}
+.subject-head .name { font-weight: 500; }
+.subject-head .v { color: var(--text-muted); font-size: 12px; }
+.subject-bar {
+  height: 18px;
+  border-radius: 6px;
+  background: #d8d8d8;
+  overflow: hidden;
+}
+.subject-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 6px;
+  transition: width 0.5s ease;
+}
+.subject-bar.dark { background: var(--text); }
+.subject-fill.dark { background: var(--text); }
+.subject-bar.mid { background: #b8b8b8; }
+.subject-fill.mid { background: var(--text); width: 60% !important; }
+.add-subject {
+  display: flex; align-items: center; justify-content: center;
+  height: 32px;
+  border: 1px dashed #d0d0d0;
+  border-radius: 6px;
+  color: var(--text-muted);
+  font-size: 12px;
+  margin-top: 4px;
+  transition: all 0.2s;
+}
+.add-subject:hover { border-color: var(--accent); color: var(--text); background: var(--accent-soft); }
+
+/* ============================================
+   待办清单 & 灵感库
+   ============================================ */
+.todo-inspire .section-title {
+  font-size: 13px; font-weight: 600;
+  color: var(--text-soft);
+  margin-bottom: 10px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.todo-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
+.todo-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+.todo-item:hover { background: #fafafa; }
+.todo-check {
+  width: 18px; height: 18px;
+  border-radius: 5px;
+  border: 1.5px solid #d0d0d0;
+  flex-shrink: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.todo-item.done .todo-check { background: var(--text); border-color: var(--text); color: var(--accent); }
+.todo-check svg { width: 12px; height: 12px; opacity: 0; transition: opacity 0.15s; }
+.todo-item.done .todo-check svg { opacity: 1; }
+.todo-text { font-size: 13px; flex: 1; }
+.todo-item.done .todo-text { text-decoration: line-through; color: var(--text-muted); }
+.todo-del {
+  opacity: 0; transition: opacity 0.2s;
+  width: 22px; height: 22px;
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--text-muted);
+}
+.todo-item:hover .todo-del { opacity: 1; }
+.todo-del:hover { color: #e74c3c; }
+
+.todo-input, .inspire-input {
+  width: 100%;
+  padding: 10px 12px;
+  background: #fafafa;
+  border-radius: 10px;
+  font-size: 13px;
+  margin-bottom: 8px;
+  transition: background 0.2s;
+}
+.todo-input:focus, .inspire-input:focus { background: #fff; box-shadow: 0 0 0 1px var(--accent); }
+.todo-input::placeholder, .inspire-input::placeholder { color: var(--text-muted); }
+
+/* 灵感库 */
+.inspire-list {
+  display: flex; flex-direction: column; gap: 8px;
+  max-height: 140px; overflow-y: auto;
+  padding-right: 4px;
+}
+.inspire-list::-webkit-scrollbar { width: 4px; }
+.inspire-list::-webkit-scrollbar-thumb { background: #e0e0e0; border-radius: 2px; }
+.inspire-item {
+  padding: 8px 10px;
+  background: #fefdf5;
+  border-left: 3px solid var(--accent);
+  border-radius: 6px;
+  font-size: 12px;
+  position: relative;
+}
+.inspire-item .title { font-weight: 500; margin-bottom: 2px; }
+.inspire-item .meta { color: var(--text-muted); font-size: 10px; }
+.inspire-item .del {
+  position: absolute; right: 6px; top: 6px;
+  width: 16px; height: 16px;
+  display: none; align-items: center; justify-content: center;
+  color: var(--text-muted);
+}
+.inspire-item:hover .del { display: inline-flex; }
+.inspire-item .del:hover { color: #e74c3c; }
+
+/* ============================================
+   日历
+   ============================================ */
+.calendar .cal-head {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 16px;
+}
+.calendar .month-nav {
+  display: flex; gap: 6px; align-items: center;
+}
+.calendar .month-nav button {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: #f4f4f4; display: inline-flex; align-items: center; justify-content: center;
+  font-size: 12px;
+  transition: background 0.2s;
+}
+.calendar .month-nav button:hover { background: var(--accent); }
+.calendar .month-label {
+  font-family: var(--serif);
+  font-size: 18px;
+  margin: 0 8px;
+}
+.calendar .weekday-row {
+  display: grid; grid-template-columns: repeat(7, 1fr);
+  text-align: center; font-size: 11px; color: var(--text-muted);
+  margin-bottom: 8px;
+}
+.calendar .day-grid {
+  display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px;
+}
+.calendar .day {
+  aspect-ratio: 1;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+  position: relative;
+}
+.calendar .day:hover { background: #f4f4f4; }
+.calendar .day.other { color: #c8c8c8; }
+.calendar .day.today {
+  background: var(--text);
+  color: var(--accent);
+  font-weight: 600;
+}
+.calendar .day.selected { background: var(--accent); color: var(--text); font-weight: 600; }
+.calendar .day.has-event::after {
+  content: '';
+  position: absolute; bottom: 3px; left: 50%; transform: translateX(-50%);
+  width: 4px; height: 4px; border-radius: 50%;
+  background: var(--accent);
+}
+.calendar .day.today.has-event::after { background: #fff; }
+.calendar .events-list {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+  font-size: 12px;
+  color: var(--text-soft);
+}
+.calendar .event-pill {
+  background: #f4f4f4;
+  border-radius: 8px;
+  padding: 6px 10px;
+  margin-bottom: 4px;
+  font-size: 12px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.calendar .event-pill .time { color: var(--text-muted); font-size: 10px; }
+
+/* ============================================
+   今日任务
+   ============================================ */
+.today-tasks .head-stat {
+  font-family: var(--serif);
+  font-size: 22px;
+  color: var(--text);
+}
+.today-tasks .head-stat .sub { font-size: 11px; color: var(--text-muted); font-family: var(--sans); margin-left: 4px; }
+.task-list {
+  display: flex; flex-direction: column;
+  gap: 6px;
+  max-height: 240px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+.task-list::-webkit-scrollbar { width: 4px; }
+.task-list::-webkit-scrollbar-thumb { background: #e0e0e0; border-radius: 2px; }
+.task-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px;
+  background: var(--text);
+  color: #fff;
+  border-radius: 10px;
+  font-size: 13px;
+  transition: transform 0.15s;
+}
+.task-row:hover { transform: translateX(2px); }
+.task-row .icon {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.12);
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.task-row .icon svg { width: 12px; height: 12px; color: var(--accent); }
+.task-row .meta { flex: 1; }
+.task-row .meta .t { font-weight: 500; }
+.task-row .meta .s { font-size: 10px; color: rgba(255,255,255,0.6); margin-top: 2px; }
+.task-row .check {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,0.3);
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.task-row .check.done { background: var(--accent); border-color: var(--accent); color: var(--text); }
+.task-row .check svg { width: 12px; height: 12px; opacity: 0; }
+.task-row .check.done svg { opacity: 1; }
+.task-input {
+  display: flex; gap: 6px; margin-top: 8px;
+}
+.task-input input {
+  flex: 1;
+  padding: 8px 12px;
+  background: #f4f4f4;
+  border-radius: 8px;
+  font-size: 12px;
+}
+.task-input input:focus { background: #fff; box-shadow: 0 0 0 1px var(--accent); }
+.task-input button {
+  padding: 8px 12px;
+  background: var(--text);
+  color: var(--accent);
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* ============================================
+   天气
+   ============================================ */
+.weather {
+  background: linear-gradient(160deg, #fff 0%, #fff3b0 100%);
+  display: flex; flex-direction: column;
+}
+.weather .city { font-size: 13px; color: var(--text-soft); margin-bottom: 4px; }
+.weather .temp {
+  font-family: var(--serif);
+  font-size: 56px;
+  line-height: 1;
+  letter-spacing: -2px;
+  margin-bottom: 4px;
+}
+.weather .temp sup { font-size: 22px; vertical-align: top; }
+.weather .condition { font-size: 13px; color: var(--text-soft); margin-bottom: 16px; }
+.weather .icon-big {
+  font-size: 48px;
+  margin: 4px 0 12px;
+}
+.weather .stats {
+  margin-top: auto;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(0,0,0,0.06);
+}
+.weather .stats .item {
+  background: rgba(255,255,255,0.6);
+  border-radius: 10px;
+  padding: 8px 10px;
+}
+.weather .stats .l { font-size: 10px; color: var(--text-muted); }
+.weather .stats .v { font-family: var(--serif); font-size: 16px; margin-top: 2px; }
+.weather.loading .temp::after {
+  content: '...';
+  font-size: 32px;
+  color: var(--text-muted);
+}
+
+/* ============================================
+   模态框
+   ============================================ */
+.modal-mask {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(4px);
+  display: none;
+  align-items: center; justify-content: center;
+  z-index: 100;
+}
+.modal-mask.show { display: flex; }
+.modal {
+  background: #fff;
+  border-radius: 20px;
+  padding: 32px;
+  width: 90%;
+  max-width: 480px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+}
+.modal h2 {
+  font-family: var(--serif);
+  font-size: 24px;
+  margin-bottom: 16px;
+}
+.modal .field { margin-bottom: 16px; }
+.modal label { font-size: 12px; color: var(--text-muted); display: block; margin-bottom: 6px; }
+.modal input, .modal select {
+  width: 100%;
+  padding: 10px 12px;
+  background: #fafafa;
+  border-radius: 10px;
+  font-size: 14px;
+  border: 1px solid transparent;
+}
+.modal input:focus, .modal select:focus { background: #fff; border-color: var(--accent); }
+.modal .actions {
+  display: flex; gap: 8px; justify-content: flex-end;
+  margin-top: 24px;
+}
+.modal button {
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 500;
+}
+.modal .btn-primary { background: var(--text); color: var(--accent); }
+.modal .btn-secondary { background: #f4f4f4; color: var(--text); }
+.modal .btn-danger { background: #fff; color: #e74c3c; border: 1px solid #fde0dd; }
+
+/* ============================================
+   响应式
+   ============================================ */
+@media (max-width: 1100px) {
+  .grid-4 { grid-template-columns: 1fr 1fr; }
+  .grid-4-bottom { grid-template-columns: 1fr 1fr; }
+  .metrics { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 700px) {
+  body { padding: 16px; }
+  .topbar { padding: 8px 12px; }
+  .topbar nav { display: none; }
+  .grid-4, .grid-4-bottom { grid-template-columns: 1fr; }
+  .metrics { grid-template-columns: 1fr 1fr; }
+  .hero h1 { font-size: 32px; }
+  .stat-item .num { font-size: 36px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============= 顶部导航 ============= -->
+<header class="topbar">
+  <div class="logo">Crextio</div>
+  <nav>
+    <a href="#" class="active">Dashboard</a>
+    <a href="#">People</a>
+    <a href="#">Hiring</a>
+    <a href="#">Devices</a>
+    <a href="#">Apps</a>
+    <a href="#">Salary</a>
+    <a href="#">Calendar</a>
+    <a href="#">Reviews</a>
+  </nav>
+  <div class="actions">
+    <button class="icon-btn" id="settingsBtn" title="设置">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+    </button>
+    <button class="icon-btn" title="通知">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+    </button>
+    <div class="avatar" id="avatar">J</div>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- ============= 欢迎区 ============= -->
+  <section class="hero">
+    <div>
+      <h1 id="greeting">Welcome in, <span id="userName">Jerry</span></h1>
+      <div class="greeting-time" id="liveTime">--:--:-- · 加载中</div>
+    </div>
+    <div class="stat-row">
+      <div class="stat-item">
+        <div class="num"><span class="small-icon"></span><span id="statDays">0</span></div>
+        <div class="label">学习日</div>
+      </div>
+      <div class="stat-item">
+        <div class="num"><span class="small-icon"></span><span id="statPomodoros">0</span></div>
+        <div class="label">完成番茄</div>
+      </div>
+      <div class="stat-item">
+        <div class="num"><span class="small-icon"></span><span id="statInspires">0</span></div>
+        <div class="label">灵感数</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============= 4 个进度指标 ============= -->
+  <section class="metrics">
+    <div class="metric">
+      <div class="head">
+        <span class="name">今日专注</span>
+        <span class="pct" id="metricToday">0%</span>
+      </div>
+      <div class="bar"><div class="fill" id="metricTodayBar" style="width: 0%"></div></div>
+    </div>
+    <div class="metric">
+      <div class="head">
+        <span class="name">本周目标</span>
+        <span class="pct" id="metricWeek">0%</span>
+      </div>
+      <div class="bar"><div class="fill" id="metricWeekBar" style="width: 0%"></div></div>
+    </div>
+    <div class="metric">
+      <div class="head">
+        <span class="name">学期进度</span>
+        <span class="pct" id="metricTerm">0%</span>
+      </div>
+      <div class="bar"><div class="fill hatched" id="metricTermBar" style="width: 0%"></div></div>
+    </div>
+    <div class="metric">
+      <div class="head">
+        <span class="name">任务完成</span>
+        <span class="pct" id="metricTasks">0%</span>
+      </div>
+      <div class="bar"><div class="fill" id="metricTasksBar" style="width: 0%"></div></div>
+    </div>
+  </section>
+
+  <!-- ============= 第一行 4 卡 ============= -->
+  <section class="grid-4">
+
+    <!-- 个人资料 -->
+    <div class="card profile">
+      <div class="photo"></div>
+      <div class="name" id="profileName">Jerry</div>
+      <div class="role" id="profileRole">在校大学生 · 大三</div>
+      <div class="badge">$ <span id="profileDays">0</span> 连击</div>
+      <div class="stats-mini">
+        <div class="item"><div class="v" id="profileTotalHours">0</div><div class="l">总学时</div></div>
+        <div class="item"><div class="v" id="profilePomodoros">0</div><div class="l">番茄</div></div>
+        <div class="item"><div class="v" id="profileInspires">0</div><div class="l">灵感</div></div>
+      </div>
+    </div>
+
+    <!-- 本周学习时长 -->
+    <div class="card study-chart">
+      <div class="card-head">
+        <div>
+          <div class="card-title">Study Time</div>
+          <div class="card-title"><span style="color: var(--text-muted); font-size: 12px;">本周</span></div>
+        </div>
+        <button class="corner-btn" title="刷新" onclick="StudyChart.refresh()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+        </button>
+      </div>
+      <div class="total"><span id="weekHours">0.0</span><small>h</small></div>
+      <div class="label-sub">本周累计学习时长</div>
+      <div class="chart-area" id="weekChart"></div>
+      <div class="day-labels" id="weekLabels"></div>
+    </div>
+
+    <!-- 番茄钟 -->
+    <div class="card pomodoro">
+      <div class="card-head" style="width: 100%;">
+        <div class="card-title">Pomodoro</div>
+        <button class="corner-btn" id="pomoSettings" title="设置时长">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        </button>
+      </div>
+      <div class="pomo-ring">
+        <svg viewBox="0 0 200 200">
+          <circle class="bg-ring" cx="100" cy="100" r="90"></circle>
+          <circle class="prog-ring" id="pomoRing" cx="100" cy="100" r="90"
+            stroke-dasharray="565.48" stroke-dashoffset="0"></circle>
+        </svg>
+        <div class="display">
+          <div class="time" id="pomoTime">25:00</div>
+          <div class="mode" id="pomoMode">专注时间</div>
+        </div>
+      </div>
+      <div class="pomo-controls">
+        <button class="pomo-btn secondary" id="pomoReset" title="重置">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+        </button>
+        <button class="pomo-btn" id="pomoToggle" title="开始/暂停">
+          <svg id="pomoIcon" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+        </button>
+        <button class="pomo-btn secondary" id="pomoSkip" title="跳过">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="5" x2="19" y2="19"></line></svg>
+        </button>
+      </div>
+      <div class="pomo-count">今日完成 <strong id="pomoTodayCount">0</strong> 个番茄 · <span id="pomoTodayMins">0</span> 分钟</div>
+    </div>
+
+    <!-- 学科进度 -->
+    <div class="card subjects">
+      <div class="card-head">
+        <div>
+          <div class="card-title">Subjects</div>
+          <div class="card-title"><span style="color: var(--text-muted); font-size: 12px;">学科进度</span></div>
+        </div>
+      </div>
+      <div class="pct" id="subjectsAvg">0%</div>
+      <div class="progress-block" id="subjectsList"></div>
+      <button class="add-subject" onclick="Subjects.add()">+ 添加学科</button>
+    </div>
+
+  </section>
+
+  <!-- ============= 第二行 4 卡 ============= -->
+  <section class="grid-4-bottom">
+
+    <!-- 待办 + 灵感 -->
+    <div class="card todo-inspire">
+      <div class="card-head">
+        <div class="card-title">Quick Capture</div>
+        <span style="font-size: 11px; color: var(--text-muted);" id="todoCount">0 项</span>
+      </div>
+
+      <div class="section-title">
+        <span>📋 待办</span>
+        <span style="color: var(--text-muted); font-weight: 400;">点击勾选完成</span>
+      </div>
+      <div class="todo-list" id="todoList"></div>
+      <input class="todo-input" id="todoInput" placeholder="+ 添加待办（回车确认）" maxlength="100" />
+
+      <div class="section-title" style="margin-top: 18px;">
+        <span>💡 灵感库</span>
+        <span style="color: var(--text-muted); font-weight: 400;" id="inspireCount">0 条</span>
+      </div>
+      <div class="inspire-list" id="inspireList"></div>
+      <input class="inspire-input" id="inspireInput" placeholder="+ 快速记录想法..." maxlength="200" />
+    </div>
+
+    <!-- 日历 -->
+    <div class="card calendar">
+      <div class="cal-head">
+        <div class="card-title">Calendar</div>
+        <div class="month-nav">
+          <button id="prevMonth" title="上个月">‹</button>
+          <span class="month-label" id="monthLabel">--</span>
+          <button id="nextMonth" title="下个月">›</button>
+        </div>
+      </div>
+      <div class="weekday-row">
+        <span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span>
+      </div>
+      <div class="day-grid" id="dayGrid"></div>
+      <div class="events-list" id="eventsList" style="display:none;">
+        <div style="font-weight: 600; margin-bottom: 6px;" id="eventsTitle">--</div>
+        <div id="eventsContent"></div>
+      </div>
+    </div>
+
+    <!-- 今日任务 -->
+    <div class="card today-tasks">
+      <div class="card-head">
+        <div class="card-title">Today's Focus</div>
+        <div class="head-stat"><span id="taskDone">0</span>/<span id="taskTotal">0</span><span class="sub">tasks</span></div>
+      </div>
+      <div class="task-list" id="taskList"></div>
+      <div class="task-input">
+        <input id="taskInput" placeholder="添加今日任务..." maxlength="80" />
+        <button id="addTaskBtn">+ Add</button>
+      </div>
+    </div>
+
+    <!-- 天气 -->
+    <div class="card weather loading" id="weatherCard">
+      <div class="city" id="weatherCity">加载中...</div>
+      <div class="icon-big" id="weatherIcon">⛅</div>
+      <div class="temp" id="weatherTemp">--<sup>°C</sup></div>
+      <div class="condition" id="weatherCondition">--</div>
+      <div class="stats">
+        <div class="item">
+          <div class="l">湿度</div>
+          <div class="v" id="weatherHumidity">--%</div>
+        </div>
+        <div class="item">
+          <div class="l">风速</div>
+          <div class="v" id="weatherWind">-- km/h</div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+</div>
+
+<!-- ============= 设置模态框 ============= -->
+<div class="modal-mask" id="settingsModal">
+  <div class="modal">
+    <h2>⚙️ 设置</h2>
+
+    <div class="field">
+      <label>姓名</label>
+      <input id="setName" placeholder="你的名字" />
+    </div>
+
+    <div class="field">
+      <label>身份 / 专业</label>
+      <input id="setRole" placeholder="例如：在校大学生 · 计算机科学" />
+    </div>
+
+    <div class="field">
+      <label>城市（用于天气查询）</label>
+      <input id="setCity" placeholder="例如：北京 / Shanghai / New York" />
+    </div>
+
+    <div class="field">
+      <label>每日专注目标（番茄数）</label>
+      <input id="setPomoGoal" type="number" min="1" max="20" placeholder="例如：8" />
+    </div>
+
+    <div class="field">
+      <label>每周学习目标（小时）</label>
+      <input id="setWeekGoal" type="number" min="1" max="100" placeholder="例如：30" />
+    </div>
+
+    <div class="actions">
+      <button class="btn-danger" id="resetAll">清空所有数据</button>
+      <button class="btn-secondary" id="closeSettings">取消</button>
+      <button class="btn-primary" id="saveSettings">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============= 番茄钟时长设置模态框 ============= -->
+<div class="modal-mask" id="pomoSettingsModal">
+  <div class="modal">
+    <h2>🍅 番茄钟设置</h2>
+    <div class="field">
+      <label>专注时长（分钟）</label>
+      <input id="setFocusMin" type="number" min="1" max="120" />
+    </div>
+    <div class="field">
+      <label>休息时长（分钟）</label>
+      <input id="setBreakMin" type="number" min="1" max="60" />
+    </div>
+    <div class="actions">
+      <button class="btn-secondary" onclick="document.getElementById('pomoSettingsModal').classList.remove('show')">取消</button>
+      <button class="btn-primary" id="savePomoSettings">保存</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================
+   数据存储
+   ============================================ */
+const Store = {
+  KEY: 'jerry-dashboard-v1',
+  defaults: {
+    name: 'Jerry',
+    role: '在校大学生 · 大三',
+    city: '北京',
+    pomoGoal: 8,
+    weekGoal: 30,
+    focusMin: 25,
+    breakMin: 5,
+    todos: [],
+    inspirations: [],
+    subjects: [
+      { name: '高等数学', progress: 75 },
+      { name: '英语', progress: 60 },
+      { name: '计算机科学', progress: 45 },
+    ],
+    weekStudy: {},  // { '2026-07-23': 2.5, ... }
+    pomos: [],      // [{date, count, mins}]
+    streak: { last: null, count: 0 },
+    todayTasks: [],
+  },
+  data: null,
+  load() {
+    try {
+      const raw = localStorage.getItem(this.KEY);
+      this.data = raw ? { ...this.defaults, ...JSON.parse(raw) } : { ...this.defaults };
+    } catch (e) {
+      this.data = { ...this.defaults };
+    }
+  },
+  save() {
+    localStorage.setItem(this.KEY, JSON.stringify(this.data));
+  },
+  todayKey() {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  },
+  todayPomos() {
+    const key = this.todayKey();
+    return (this.data.pomos || []).find(p => p.date === key) || { date: key, count: 0, mins: 0 };
+  },
+  addPomo(mins) {
+    const key = this.todayKey();
+    let entry = this.data.pomos.find(p => p.date === key);
+    if (!entry) { entry = { date: key, count: 0, mins: 0 }; this.data.pomos.push(entry); }
+    entry.count++;
+    entry.mins += mins;
+    // 同时累计到今日学习时长
+    this.data.weekStudy[key] = (this.data.weekStudy[key] || 0) + (mins / 60);
+    // 更新连击
+    this.updateStreak();
+    this.save();
+  },
+  updateStreak() {
+    const today = this.todayKey();
+    if (this.data.streak.last === today) return; // 今天已记录
+    const yesterday = (() => {
+      const d = new Date(); d.setDate(d.getDate() - 1);
+      return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    })();
+    if (this.data.streak.last === yesterday) {
+      this.data.streak.count += 1;
+    } else {
+      this.data.streak.count = 1;
+    }
+    this.data.streak.last = today;
+  }
+};
+
+/* ============================================
+   时钟
+   ============================================ */
+const Clock = {
+  start() {
+    const tick = () => {
+      const d = new Date();
+      const weekdays = ['日','一','二','三','四','五','六'];
+      const pad = n => String(n).padStart(2, '0');
+      const dateStr = `${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日 星期${weekdays[d.getDay()]}`;
+      const timeStr = `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+      document.getElementById('liveTime').textContent = `${dateStr} · ${timeStr}`;
+
+      // 顶部时间（如果有专门区域）
+      // 顶部欢迎语根据时间变化
+      const h = d.getHours();
+      let g = '欢迎回来';
+      if (h < 6) g = '夜深了，记得休息';
+      else if (h < 11) g = '早安';
+      else if (h < 13) g = '中午好';
+      else if (h < 18) g = '下午好';
+      else g = '晚上好';
+      document.getElementById('greeting').innerHTML = `${g}, <span id="userName">${Store.data.name}</span>`;
+    };
+    tick();
+    setInterval(tick, 1000);
+  }
+};
+
+/* ============================================
+   顶部统计
+   ============================================ */
+const Stats = {
+  refresh() {
+    // 学习日（去重）
+    const uniqueDays = new Set(Store.data.pomos.map(p => p.date)).size;
+    document.getElementById('statDays').textContent = uniqueDays;
+    // 完成番茄
+    const totalPomos = Store.data.pomos.reduce((s, p) => s + p.count, 0);
+    document.getElementById('statPomodoros').textContent = totalPomos;
+    // 灵感数
+    document.getElementById('statInspires').textContent = Store.data.inspirations.length;
+    // 个人卡
+    document.getElementById('profileName').textContent = Store.data.name;
+    document.getElementById('profileRole').textContent = Store.data.role;
+    document.getElementById('profileDays').textContent = Store.data.streak.count;
+    document.getElementById('profilePomodoros').textContent = totalPomos;
+    document.getElementById('profileInspires').textContent = Store.data.inspirations.length;
+    const totalHours = Store.data.pomos.reduce((s, p) => s + p.mins, 0) / 60;
+    document.getElementById('profileTotalHours').textContent = totalHours.toFixed(1);
+    document.getElementById('avatar').textContent = Store.data.name.charAt(0).toUpperCase();
+  }
+};
+
+/* ============================================
+   顶部指标
+   ============================================ */
+const Metrics = {
+  refresh() {
+    // 今日专注
+    const todayPomos = Store.todayPomos();
+    const todayPct = Math.min(100, Math.round(todayPomos.count / Store.data.pomoGoal * 100));
+    document.getElementById('metricToday').textContent = todayPct + '%';
+    document.getElementById('metricTodayBar').style.width = todayPct + '%';
+    // 本周目标
+    const weekMins = this.weekMins();
+    const weekPct = Math.min(100, Math.round(weekMins / 60 / Store.data.weekGoal * 100));
+    document.getElementById('metricWeek').textContent = weekPct + '%';
+    document.getElementById('metricWeekBar').style.width = weekPct + '%';
+    // 学期进度（根据学科平均）
+    const avg = Store.data.subjects.length
+      ? Math.round(Store.data.subjects.reduce((s, x) => s + x.progress, 0) / Store.data.subjects.length)
+      : 0;
+    document.getElementById('metricTerm').textContent = avg + '%';
+    document.getElementById('metricTermBar').style.width = avg + '%';
+    // 任务完成
+    const tasks = Store.data.todayTasks;
+    const done = tasks.filter(t => t.done).length;
+    const taskPct = tasks.length ? Math.round(done / tasks.length * 100) : 0;
+    document.getElementById('metricTasks').textContent = taskPct + '%';
+    document.getElementById('metricTasksBar').style.width = taskPct + '%';
+  },
+  weekMins() {
+    let total = 0;
+    for (let i = 0; i < 7; i++) {
+      const d = new Date(); d.setDate(d.getDate() - i);
+      const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+      const entry = Store.data.pomos.find(p => p.date === key);
+      if (entry) total += entry.mins;
+    }
+    return total;
+  }
+};
+
+/* ============================================
+   本周学习柱状图
+   ============================================ */
+const StudyChart = {
+  refresh() {
+    const chartEl = document.getElementById('weekChart');
+    const labelsEl = document.getElementById('weekLabels');
+    const days = ['日','一','二','三','四','五','六'];
+    const today = new Date();
+    const todayKey = Store.todayKey();
+    let weekData = [];
+    let labels = [];
+    let totalHours = 0;
+
+    // 取最近 7 天（含今天），按 Mon-Sun 顺序
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date(today); d.setDate(d.getDate() - i);
+      const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+      const entry = Store.data.pomos.find(p => p.date === key);
+      const hrs = entry ? entry.mins / 60 : 0;
+      weekData.push({ key, hrs, isToday: key === todayKey, day: days[d.getDay()] });
+      labels.push(days[d.getDay()]);
+      totalHours += hrs;
+    }
+
+    // 总学时
+    document.getElementById('weekHours').textContent = totalHours.toFixed(1);
+
+    // 渲染柱状图
+    const maxH = Math.max(2, ...weekData.map(d => d.hrs));
+    chartEl.innerHTML = weekData.map(d => {
+      const h = d.hrs > 0 ? Math.max(8, (d.hrs / maxH) * 110) : 8;
+      const cls = d.isToday ? 'today' : (d.hrs === 0 ? 'empty' : '');
+      const valLabel = d.hrs > 0 ? `<div class="bar-val">${d.hrs.toFixed(1)}h</div>` : '';
+      return `<div class="bar-col"><div class="bar ${cls}" style="height: ${h}px;">${valLabel}</div></div>`;
+    }).join('');
+
+    labelsEl.innerHTML = labels.map((l, i) => `<span>${l}</span>`).join('');
+  }
+};
+
+/* ============================================
+   番茄钟
+   ============================================ */
+const Pomodoro = {
+  interval: null,
+  remaining: 25 * 60,
+  mode: 'focus',  // 'focus' | 'break'
+  running: false,
+  ringRadius: 90,
+  ringCirc: 2 * Math.PI * 90,
+
+  init() {
+    this.remaining = Store.data.focusMin * 60;
+    this.render();
+    document.getElementById('pomoToggle').addEventListener('click', () => this.toggle());
+    document.getElementById('pomoReset').addEventListener('click', () => this.reset());
+    document.getElementById('pomoSkip').addEventListener('click', () => this.skip());
+    document.getElementById('pomoSettings').addEventListener('click', () => {
+      document.getElementById('setFocusMin').value = Store.data.focusMin;
+      document.getElementById('setBreakMin').value = Store.data.breakMin;
+      document.getElementById('pomoSettingsModal').classList.add('show');
+    });
+    document.getElementById('savePomoSettings').addEventListener('click', () => {
+      Store.data.focusMin = parseInt(document.getElementById('setFocusMin').value) || 25;
+      Store.data.breakMin = parseInt(document.getElementById('setBreakMin').value) || 5;
+      Store.save();
+      this.reset();
+      document.getElementById('pomoSettingsModal').classList.remove('show');
+    });
+  },
+
+  get totalSec() {
+    return (this.mode === 'focus' ? Store.data.focusMin : Store.data.breakMin) * 60;
+  },
+
+  toggle() {
+    if (this.running) this.pause();
+    else this.start();
+  },
+
+  start() {
+    this.running = true;
+    document.getElementById('pomoIcon').innerHTML = '<rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect>';
+    this.interval = setInterval(() => this.tick(), 1000);
+  },
+
+  pause() {
+    this.running = false;
+    document.getElementById('pomoIcon').innerHTML = '<polygon points="5 3 19 12 5 21 5 3"></polygon>';
+    clearInterval(this.interval);
+  },
+
+  reset() {
+    this.pause();
+    this.remaining = this.totalSec;
+    this.render();
+  },
+
+  skip() {
+    this.complete();
+  },
+
+  tick() {
+    if (this.remaining <= 0) {
+      this.complete();
+      return;
+    }
+    this.remaining--;
+    this.render();
+  },
+
+  complete() {
+    this.pause();
+    if (this.mode === 'focus') {
+      Store.addPomo(Store.data.focusMin);
+      Stats.refresh();
+      Metrics.refresh();
+      StudyChart.refresh();
+      this.notify('🍅 专注完成！休息一下吧', `已完成 ${Store.data.focusMin} 分钟专注`);
+      this.mode = 'break';
+      this.remaining = Store.data.breakMin * 60;
+    } else {
+      this.notify('☕ 休息结束', '准备开始下一轮专注');
+      this.mode = 'focus';
+      this.remaining = Store.data.focusMin * 60;
+    }
+    this.render();
+  },
+
+  render() {
+    const total = this.totalSec;
+    const left = this.remaining;
+    const m = Math.floor(left / 60);
+    const s = left % 60;
+    document.getElementById('pomoTime').textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    document.getElementById('pomoMode').textContent = this.mode === 'focus' ? '专注时间' : '休息时间';
+    const offset = this.ringCirc * (left / total);
+    document.getElementById('pomoRing').style.strokeDashoffset = this.ringCirc - offset;
+    // 今日统计
+    const todayPomos = Store.todayPomos();
+    document.getElementById('pomoTodayCount').textContent = todayPomos.count;
+    document.getElementById('pomoTodayMins').textContent = todayPomos.mins;
+  },
+
+  notify(title, body) {
+    if ('Notification' in window && Notification.permission === 'granted') {
+      new Notification(title, { body, silent: false });
+    } else {
+      // 退化为页面内提示
+      const div = document.createElement('div');
+      div.style.cssText = `position: fixed; top: 24px; right: 24px; background: var(--text); color: var(--accent); padding: 16px 24px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); z-index: 200; font-size: 14px; max-width: 320px;`;
+      div.innerHTML = `<div style="font-weight: 600; margin-bottom: 4px;">${title}</div><div style="color: rgba(255,255,255,0.7); font-size: 12px;">${body}</div>`;
+      document.body.appendChild(div);
+      setTimeout(() => div.remove(), 4000);
+    }
+    // 提示音
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const o = ctx.createOscillator();
+      const g = ctx.createGain();
+      o.connect(g); g.connect(ctx.destination);
+      o.frequency.value = 880; g.gain.value = 0.2;
+      o.start();
+      setTimeout(() => { o.frequency.value = 660; }, 200);
+      setTimeout(() => { o.stop(); ctx.close(); }, 500);
+    } catch (e) {}
+  }
+};
+
+/* ============================================
+   学科进度
+   ============================================ */
+const Subjects = {
+  refresh() {
+    const list = document.getElementById('subjectsList');
+    const subs = Store.data.subjects;
+    if (!subs.length) {
+      list.innerHTML = '<div style="color: var(--text-muted); font-size: 12px; text-align: center; padding: 12px;">还没有学科，点击下方添加</div>';
+      document.getElementById('subjectsAvg').textContent = '0%';
+      return;
+    }
+    list.innerHTML = subs.map((s, i) => {
+      const bgStyle = i === 0 ? '' : (i === 1 ? 'style="background: #c8c8c8;"' : 'style="background: #c8c8c8;"');
+      return `<div class="subject-item">
+        <div class="subject-head">
+          <span class="name" contenteditable="true" onblur="Subjects.update(${i}, 'name', this.textContent)">${s.name}</span>
+          <span class="v">${s.progress}%</span>
+        </div>
+        <div class="subject-bar"><div class="subject-fill" style="width: ${s.progress}%;"></div></div>
+        <div style="display: flex; gap: 4px; margin-top: 4px;">
+          <input type="range" min="0" max="100" value="${s.progress}" style="flex: 1; height: 4px;" oninput="Subjects.update(${i}, 'progress', this.value)" />
+          <button onclick="Subjects.remove(${i})" style="width: 20px; height: 20px; color: var(--text-muted); font-size: 12px;">×</button>
+        </div>
+      </div>`;
+    }).join('');
+    const avg = Math.round(subs.reduce((s, x) => s + x.progress, 0) / subs.length);
+    document.getElementById('subjectsAvg').textContent = avg + '%';
+  },
+  add() {
+    const name = prompt('学科名称：');
+    if (!name) return;
+    Store.data.subjects.push({ name, progress: 0 });
+    Store.save();
+    this.refresh();
+    Metrics.refresh();
+  },
+  remove(i) {
+    Store.data.subjects.splice(i, 1);
+    Store.save();
+    this.refresh();
+    Metrics.refresh();
+  },
+  update(i, key, val) {
+    if (key === 'progress') val = parseInt(val);
+    Store.data.subjects[i][key] = val;
+    Store.save();
+    this.refresh();
+    Metrics.refresh();
+  }
+};
+
+/* ============================================
+   待办清单
+   ============================================ */
+const Todos = {
+  refresh() {
+    const list = document.getElementById('todoList');
+    const todos = Store.data.todos;
+    if (!todos.length) {
+      list.innerHTML = '<div style="color: var(--text-muted); font-size: 12px; text-align: center; padding: 8px;">还没有待办，添加一个吧</div>';
+    } else {
+      list.innerHTML = todos.map((t, i) => `
+        <div class="todo-item ${t.done ? 'done' : ''}">
+          <div class="todo-check" onclick="Todos.toggle(${i})">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          </div>
+          <div class="todo-text">${this.escape(t.text)}</div>
+          <button class="todo-del" onclick="Todos.remove(${i})">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path></svg>
+          </button>
+        </div>
+      `).join('');
+    }
+    document.getElementById('todoCount').textContent = todos.filter(t => !t.done).length + ' 项';
+  },
+  add(text) {
+    if (!text.trim()) return;
+    Store.data.todos.unshift({ text: text.trim(), done: false, created: Date.now() });
+    Store.save();
+    this.refresh();
+  },
+  toggle(i) {
+    Store.data.todos[i].done = !Store.data.todos[i].done;
+    Store.save();
+    this.refresh();
+  },
+  remove(i) {
+    Store.data.todos.splice(i, 1);
+    Store.save();
+    this.refresh();
+  },
+  escape(s) {
+    return s.replace(/[<>&"']/g, c => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&#39;' }[c]));
+  }
+};
+
+/* ============================================
+   灵感库
+   ============================================ */
+const Inspires = {
+  refresh() {
+    const list = document.getElementById('inspireList');
+    const items = Store.data.inspirations.slice(0, 10);
+    if (!items.length) {
+      list.innerHTML = '<div style="color: var(--text-muted); font-size: 11px; text-align: center; padding: 12px;">还没有灵感，快记一条吧 ✨</div>';
+    } else {
+      list.innerHTML = items.map((it, i) => {
+        const time = new Date(it.created);
+        const timeStr = `${time.getMonth()+1}/${time.getDate()} ${String(time.getHours()).padStart(2,'0')}:${String(time.getMinutes()).padStart(2,'0')}`;
+        return `<div class="inspire-item">
+          <button class="del" onclick="Inspires.remove(${i})">×</button>
+          <div class="title">${Todos.escape(it.text)}</div>
+          <div class="meta">${timeStr}</div>
+        </div>`;
+      }).join('');
+    }
+    document.getElementById('inspireCount').textContent = Store.data.inspirations.length + ' 条';
+  },
+  add(text) {
+    if (!text.trim()) return;
+    Store.data.inspirations.unshift({ text: text.trim(), created: Date.now() });
+    Store.save();
+    this.refresh();
+    Stats.refresh();
+  },
+  remove(i) {
+    Store.data.inspirations.splice(i, 1);
+    Store.save();
+    this.refresh();
+    Stats.refresh();
+  }
+};
+
+/* ============================================
+   今日任务（深色卡片）
+   ============================================ */
+const TodayTasks = {
+  refresh() {
+    const list = document.getElementById('taskList');
+    const tasks = Store.data.todayTasks;
+    list.innerHTML = tasks.map((t, i) => `
+      <div class="task-row">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+        </div>
+        <div class="meta">
+          <div class="t">${Todos.escape(t.text)}</div>
+          <div class="s">${t.done ? '已完成' : '进行中'}</div>
+        </div>
+        <div class="check ${t.done ? 'done' : ''}" onclick="TodayTasks.toggle(${i})">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </div>
+      </div>
+    `).join('') || '<div style="color: rgba(255,255,255,0.5); font-size: 12px; text-align: center; padding: 12px;">还没有任务，添加一个吧</div>';
+    const done = tasks.filter(t => t.done).length;
+    document.getElementById('taskDone').textContent = done;
+    document.getElementById('taskTotal').textContent = tasks.length;
+    Metrics.refresh();
+  },
+  add(text) {
+    if (!text.trim()) return;
+    Store.data.todayTasks.unshift({ text: text.trim(), done: false, created: Date.now() });
+    Store.save();
+    this.refresh();
+  },
+  toggle(i) {
+    Store.data.todayTasks[i].done = !Store.data.todayTasks[i].done;
+    Store.save();
+    this.refresh();
+  },
+  remove(i) {
+    Store.data.todayTasks.splice(i, 1);
+    Store.save();
+    this.refresh();
+  }
+};
+
+/* ============================================
+   日历
+   ============================================ */
+const Calendar = {
+  current: new Date(),
+  selected: null,
+  init() {
+    this.bindClicks();
+    this.refresh();
+    document.getElementById('prevMonth').addEventListener('click', () => {
+      this.current.setMonth(this.current.getMonth() - 1);
+      this.refresh();
+    });
+    document.getElementById('nextMonth').addEventListener('click', () => {
+      this.current.setMonth(this.current.getMonth() + 1);
+      this.refresh();
+    });
+  },
+  refresh() {
+    const year = this.current.getFullYear();
+    const month = this.current.getMonth();
+    const today = new Date();
+    const todayKey = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+    document.getElementById('monthLabel').textContent = `${year}年${month+1}月`;
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+    const startWeek = firstDay.getDay();
+    const days = lastDay.getDate();
+    let html = '';
+    // 上月补充
+    const prevLast = new Date(year, month, 0).getDate();
+    for (let i = startWeek - 1; i >= 0; i--) {
+      html += `<div class="day other" data-date="${year}-${String(month).padStart(2,'0')}-${prevLast - i}">${prevLast - i}</div>`;
+    }
+    // 当月
+    for (let d = 1; d <= days; d++) {
+      const key = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+      const isToday = key === todayKey;
+      const isSel = this.selected === key;
+      const hasEvent = Store.data.pomos.find(p => p.date === key);
+      let cls = 'day';
+      if (isToday) cls += ' today';
+      if (isSel) cls += ' selected';
+      if (hasEvent) cls += ' has-event';
+      html += `<div class="${cls}" data-date="${key}">${d}</div>`;
+    }
+    // 下月补充
+    const endWeek = lastDay.getDay();
+    for (let i = 1; i < 7 - endWeek; i++) {
+      html += `<div class="day other" data-date="${year}-${String(month+2).padStart(2,'0')}-${i}">${i}</div>`;
+    }
+    document.getElementById('dayGrid').innerHTML = html;
+    // 事件显示
+    this.showEvents();
+  },
+  bindClicks() {
+    // 事件委托：只绑定一次，dayGrid 内容刷新不影响
+    document.getElementById('dayGrid').addEventListener('click', e => {
+      const day = e.target.closest('.day');
+      if (!day) return;
+      this.selected = day.dataset.date;
+      this.refresh();
+    });
+  },
+  showEvents() {
+    const key = this.selected || Store.todayKey();
+    const eventsEl = document.getElementById('eventsList');
+    const titleEl = document.getElementById('eventsTitle');
+    const contentEl = document.getElementById('eventsContent');
+    titleEl.textContent = key;
+    const entry = Store.data.pomos.find(p => p.date === key);
+    const tasksForDay = Store.data.todayTasks;
+    if (!entry && !tasksForDay.length) {
+      eventsEl.style.display = 'none';
+      return;
+    }
+    eventsEl.style.display = 'block';
+    let html = '';
+    if (entry) {
+      html += `<div class="event-pill"><span>🍅 完成 ${entry.count} 个番茄</span><span class="time">${entry.mins} 分钟</span></div>`;
+    }
+    if (tasksForDay.length) {
+      html += tasksForDay.slice(0, 3).map(t => `<div class="event-pill"><span>${t.done ? '✓' : '○'} ${Todos.escape(t.text)}</span></div>`).join('');
+    }
+    contentEl.innerHTML = html;
+  }
+};
+
+/* ============================================
+   天气
+   ============================================ */
+const Weather = {
+  async refresh() {
+    const card = document.getElementById('weatherCard');
+    const city = Store.data.city || '北京';
+    try {
+      // 1. 地理编码
+      const geoRes = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=zh&format=json`);
+      const geo = await geoRes.json();
+      if (!geo.results || !geo.results.length) {
+        this.showError('未找到城市');
+        return;
+      }
+      const { latitude, longitude, name, country } = geo.results[0];
+      // 2. 天气
+      const wRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&hourly=relativehumidity_2m`);
+      const w = await wRes.json();
+      const cur = w.current_weather;
+      // 当前小时的湿度（最接近）
+      const now = new Date();
+      const hourIdx = w.hourly.time.findIndex(t => t === now.toISOString().slice(0,13) + ':00');
+      const humidity = hourIdx >= 0 ? w.hourly.relativehumidity_2m[hourIdx] : '--';
+      // 天气代码转图标
+      const codeMap = {
+        0: { icon: '☀️', cond: '晴朗' },
+        1: { icon: '🌤️', cond: '少云' },
+        2: { icon: '⛅', cond: '多云' },
+        3: { icon: '☁️', cond: '阴' },
+        45: { icon: '🌫️', cond: '雾' },
+        48: { icon: '🌫️', cond: '雾凇' },
+        51: { icon: '🌦️', cond: '小毛雨' },
+        53: { icon: '🌦️', cond: '毛雨' },
+        55: { icon: '🌧️', cond: '大毛雨' },
+        61: { icon: '🌧️', cond: '小雨' },
+        63: { icon: '🌧️', cond: '中雨' },
+        65: { icon: '🌧️', cond: '大雨' },
+        71: { icon: '🌨️', cond: '小雪' },
+        73: { icon: '🌨️', cond: '中雪' },
+        75: { icon: '❄️', cond: '大雪' },
+        77: { icon: '🌨️', cond: '雪粒' },
+        80: { icon: '🌦️', cond: '阵雨' },
+        81: { icon: '🌧️', cond: '强阵雨' },
+        82: { icon: '⛈️', cond: '暴阵雨' },
+        95: { icon: '⛈️', cond: '雷暴' },
+        96: { icon: '⛈️', cond: '雷暴冰雹' },
+        99: { icon: '⛈️', cond: '强雷暴' },
+      };
+      const c = codeMap[cur.weathercode] || { icon: '⛅', cond: '未知' };
+      document.getElementById('weatherCity').textContent = `${name}, ${country || ''}`;
+      document.getElementById('weatherIcon').textContent = c.icon;
+      document.getElementById('weatherTemp').innerHTML = `${Math.round(cur.temperature)}<sup>°C</sup>`;
+      document.getElementById('weatherCondition').textContent = c.cond;
+      document.getElementById('weatherHumidity').textContent = humidity + '%';
+      document.getElementById('weatherWind').textContent = cur.windspeed.toFixed(1) + ' km/h';
+      card.classList.remove('loading');
+    } catch (e) {
+      this.showError('网络错误');
+      console.error(e);
+    }
+  },
+  showError(msg) {
+    document.getElementById('weatherCity').textContent = msg;
+    document.getElementById('weatherTemp').innerHTML = '--<sup>°C</sup>';
+    document.getElementById('weatherCard').classList.remove('loading');
+  }
+};
+
+/* ============================================
+   设置
+   ============================================ */
+const Settings = {
+  open() {
+    document.getElementById('setName').value = Store.data.name;
+    document.getElementById('setRole').value = Store.data.role;
+    document.getElementById('setCity').value = Store.data.city;
+    document.getElementById('setPomoGoal').value = Store.data.pomoGoal;
+    document.getElementById('setWeekGoal').value = Store.data.weekGoal;
+    document.getElementById('settingsModal').classList.add('show');
+  },
+  save() {
+    Store.data.name = document.getElementById('setName').value || 'Jerry';
+    Store.data.role = document.getElementById('setRole').value || '在校大学生';
+    Store.data.city = document.getElementById('setCity').value || '北京';
+    Store.data.pomoGoal = parseInt(document.getElementById('setPomoGoal').value) || 8;
+    Store.data.weekGoal = parseInt(document.getElementById('setWeekGoal').value) || 30;
+    Store.save();
+    document.getElementById('settingsModal').classList.remove('show');
+    Stats.refresh();
+    Metrics.refresh();
+    Weather.refresh();
+  },
+  resetAll() {
+    if (!confirm('确定要清空所有数据吗？此操作不可恢复。')) return;
+    localStorage.removeItem(Store.KEY);
+    location.reload();
+  }
+};
+
+/* ============================================
+   启动
+   ============================================ */
+function init() {
+  Store.load();
+  Clock.start();
+  Stats.refresh();
+  Metrics.refresh();
+  StudyChart.refresh();
+  Pomodoro.init();
+  Subjects.refresh();
+  Todos.refresh();
+  Inspires.refresh();
+  TodayTasks.refresh();
+  Calendar.init();
+  Weather.refresh();
+
+  // 输入框事件
+  document.getElementById('todoInput').addEventListener('keypress', e => {
+    if (e.key === 'Enter') { Todos.add(e.target.value); e.target.value = ''; }
+  });
+  document.getElementById('inspireInput').addEventListener('keypress', e => {
+    if (e.key === 'Enter') { Inspires.add(e.target.value); e.target.value = ''; }
+  });
+  document.getElementById('taskInput').addEventListener('keypress', e => {
+    if (e.key === 'Enter') { TodayTasks.add(e.target.value); e.target.value = ''; }
+  });
+  document.getElementById('addTaskBtn').addEventListener('click', () => {
+    const inp = document.getElementById('taskInput');
+    TodayTasks.add(inp.value); inp.value = '';
+  });
+
+  // 设置
+  document.getElementById('settingsBtn').addEventListener('click', () => Settings.open());
+  document.getElementById('closeSettings').addEventListener('click', () => document.getElementById('settingsModal').classList.remove('show'));
+  document.getElementById('saveSettings').addEventListener('click', () => Settings.save());
+  document.getElementById('resetAll').addEventListener('click', () => Settings.resetAll());
+  document.getElementById('settingsModal').addEventListener('click', e => {
+    if (e.target.id === 'settingsModal') e.target.classList.remove('show');
+  });
+  document.getElementById('pomoSettingsModal').addEventListener('click', e => {
+    if (e.target.id === 'pomoSettingsModal') e.target.classList.remove('show');
+  });
+
+  // 通知权限
+  if ('Notification' in window && Notification.permission === 'default') {
+    Notification.requestPermission();
+  }
+
+  // 每 30 秒刷新一次天气和统计
+  setInterval(() => {
+    Stats.refresh();
+    Metrics.refresh();
+  }, 30000);
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>

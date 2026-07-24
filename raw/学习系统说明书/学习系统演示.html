@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jerry 的学习操作系统 — 完整指南</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<style>
+  :root {
+    --surface-0: #ffffff;
+    --surface-1: #f7f8fa;
+    --surface-2: #eef0f3;
+    --text-primary: #0b0b0b;
+    --text-secondary: #52514e;
+    --text-muted: #8b8a85;
+    --accent: #2a78d6;
+    --accent-light: #e8f0fe;
+    --green: #1baf7a;
+    --green-light: #e6f7f1;
+    --yellow: #eda100;
+    --yellow-light: #fef7e0;
+    --red: #e34948;
+    --red-light: #fde8e8;
+    --violet: #4a3aa7;
+    --violet-light: #eeebf9;
+    --orange: #eb6834;
+    --border: #e0e0dd;
+    --radius-sm: 6px;
+    --radius: 10px;
+    --radius-lg: 16px;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+    --shadow: 0 2px 8px rgba(0,0,0,0.06);
+    --shadow-lg: 0 4px 24px rgba(0,0,0,0.08);
+    --max-w: 1100px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --surface-0: #1a1a19;
+      --surface-1: #222221;
+      --surface-2: #2c2c2a;
+      --text-primary: #ffffff;
+      --text-secondary: #c3c2b7;
+      --text-muted: #8b8a85;
+      --accent: #3987e5;
+      --accent-light: #1a2740;
+      --green: #199e70;
+      --green-light: #152e24;
+      --yellow: #c98500;
+      --yellow-light: #2e2410;
+      --red: #e66767;
+      --red-light: #301a1a;
+      --violet: #9085e9;
+      --violet-light: #1f1c36;
+      --orange: #d95926;
+      --border: #3a3a36;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
+      --shadow: 0 2px 8px rgba(0,0,0,0.3);
+      --shadow-lg: 0 4px 24px rgba(0,0,0,0.4);
+    }
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: var(--surface-1);
+    color: var(--text-primary);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Navigation */
+  .top-nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--surface-0);
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(10px);
+    padding: 0 24px;
+  }
+  .top-nav-inner {
+    max-width: var(--max-w); margin: 0 auto;
+    display: flex; align-items: center; gap: 28px;
+    height: 56px; overflow-x: auto;
+  }
+  .top-nav a {
+    text-decoration: none; color: var(--text-secondary);
+    font-size: 14px; font-weight: 500; white-space: nowrap;
+    transition: color 0.15s;
+  }
+  .top-nav a:hover { color: var(--accent); }
+  .top-nav .logo {
+    font-weight: 700; font-size: 16px; color: var(--text-primary);
+    margin-right: 8px;
+  }
+
+  /* Hero */
+  .hero {
+    background: var(--surface-0);
+    border-bottom: 1px solid var(--border);
+    padding: 64px 24px 56px;
+    text-align: center;
+  }
+  .hero h1 { font-size: 42px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 12px; }
+  .hero .subtitle { font-size: 20px; color: var(--text-secondary); max-width: 640px; margin: 0 auto 28px; }
+  .hero .badges { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 32px; }
+  .badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 14px; border-radius: 20px;
+    font-size: 13px; font-weight: 600;
+  }
+  .badge-blue { background: var(--accent-light); color: var(--accent); }
+  .badge-green { background: var(--green-light); color: var(--green); }
+  .badge-violet { background: var(--violet-light); color: var(--violet); }
+  .hero-diagram {
+    max-width: 800px; margin: 0 auto;
+    background: var(--surface-1); border-radius: var(--radius-lg);
+    padding: 28px; border: 1px solid var(--border);
+  }
+
+  /* Sections */
+  .section {
+    max-width: var(--max-w); margin: 0 auto; padding: 52px 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section:last-of-type { border-bottom: none; }
+  .section h2 {
+    font-size: 30px; font-weight: 700; letter-spacing: -0.01em;
+    margin-bottom: 8px;
+  }
+  .section > .section-desc {
+    color: var(--text-secondary); font-size: 16px; margin-bottom: 32px;
+  }
+  .section h3 {
+    font-size: 20px; font-weight: 700; margin: 36px 0 12px;
+  }
+
+  /* Cards */
+  .card-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+  }
+  .card {
+    background: var(--surface-0);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: var(--shadow-sm);
+  }
+  .card h4 {
+    font-size: 17px; font-weight: 700; margin-bottom: 8px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .card .card-icon { font-size: 24px; }
+  .card p { color: var(--text-secondary); font-size: 14px; line-height: 1.6; }
+
+  /* Three column layout */
+  .three-col {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+
+  /* Tables */
+  table {
+    width: 100%; border-collapse: collapse;
+    font-size: 14px; margin: 16px 0;
+  }
+  th, td {
+    text-align: left; padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  th {
+    font-weight: 700; color: var(--text-secondary);
+    font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em;
+  }
+  td { color: var(--text-primary); }
+  tr:last-child td { border-bottom: none; }
+
+  /* Step walkthrough */
+  .step {
+    display: flex; gap: 20px; align-items: flex-start;
+    padding: 24px 0; border-bottom: 1px solid var(--border);
+  }
+  .step:last-child { border-bottom: none; }
+  .step-num {
+    flex-shrink: 0; width: 44px; height: 44px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 18px;
+    color: var(--surface-0);
+  }
+  .step-num.blue { background: var(--accent); }
+  .step-num.green { background: var(--green); }
+  .step-num.violet { background: var(--violet); }
+  .step-num.yellow { background: var(--yellow); color: var(--text-primary); }
+  .step-num.orange { background: var(--orange); }
+  .step-num.red { background: var(--red); }
+  .step-body h4 { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+  .step-body p { color: var(--text-secondary); font-size: 14px; }
+  .step-body .code-snippet {
+    display: block; margin-top: 8px; padding: 10px 14px;
+    background: var(--surface-1); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); font-size: 13px;
+    font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+    color: var(--text-primary);
+  }
+  .step-body .tag {
+    display: inline-block; padding: 2px 8px; border-radius: 4px;
+    font-size: 12px; font-weight: 600; margin-right: 6px;
+  }
+  .tag-blue { background: var(--accent-light); color: var(--accent); }
+  .tag-green { background: var(--green-light); color: var(--green); }
+  .tag-yellow { background: var(--yellow-light); color: var(--yellow); }
+
+  /* Diagrams */
+  .diagram-wrap {
+    background: var(--surface-0); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 28px;
+    margin: 20px 0; box-shadow: var(--shadow-sm);
+    overflow-x: auto;
+    display: flex; justify-content: center;
+  }
+
+  /* Folder tree */
+  .folder-tree {
+    background: var(--surface-1); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 20px 24px;
+    font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+    font-size: 13px; line-height: 2; margin: 16px 0;
+    overflow-x: auto;
+  }
+  .folder-tree .dir { color: var(--accent); font-weight: 600; }
+  .folder-tree .file { color: var(--text-secondary); }
+  .folder-tree .comment { color: var(--text-muted); }
+
+  /* Quote/callout */
+  .callout {
+    border-left: 4px solid var(--accent);
+    padding: 16px 20px; margin: 20px 0;
+    background: var(--accent-light);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  }
+  .callout p { color: var(--text-primary); font-size: 15px; }
+  .callout strong { color: var(--accent); }
+
+  /* Tabs */
+  .tab-bar {
+    display: flex; gap: 4px; margin-bottom: 20px;
+    background: var(--surface-2); border-radius: var(--radius);
+    padding: 4px; overflow-x: auto;
+  }
+  .tab-btn {
+    padding: 8px 18px; border: none; border-radius: var(--radius-sm);
+    font-size: 14px; font-weight: 600; cursor: pointer;
+    background: transparent; color: var(--text-secondary);
+    white-space: nowrap; transition: all 0.15s;
+    font-family: inherit;
+  }
+  .tab-btn.active { background: var(--surface-0); color: var(--text-primary); box-shadow: var(--shadow-sm); }
+  .tab-btn:hover:not(.active) { color: var(--text-primary); }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .hero h1 { font-size: 30px; }
+    .hero .subtitle { font-size: 16px; }
+    .section { padding: 36px 16px; }
+    .section h2 { font-size: 24px; }
+    .card-grid, .three-col { grid-template-columns: 1fr; }
+    .step { flex-direction: column; gap: 12px; }
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center; padding: 32px 24px 48px;
+    color: var(--text-muted); font-size: 13px;
+  }
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="top-nav">
+  <div class="top-nav-inner">
+    <span class="logo">🧠 Jerry 学习OS</span>
+    <a href="#overview">系统概览</a>
+    <a href="#walkthrough">完整实例</a>
+    <a href="#systems">三大子系统</a>
+    <a href="#subjects">学科适配</a>
+    <a href="#quickstart">快速上手</a>
+    <a href="#faq">FAQ</a>
+  </div>
+</nav>
+
+<!-- Hero -->
+<header class="hero">
+  <h1>Jerry 的学习操作系统</h1>
+  <p class="subtitle">一套基于 AI 的交互式学习闭环——从「看完就忘」到「学完能讲给别人听」。</p>
+  <div class="badges">
+    <span class="badge badge-blue">📋 knowledge-check 检测引擎</span>
+    <span class="badge badge-green">📚 Karpathy Wiki 知识库</span>
+    <span class="badge badge-violet">📂 科目文件夹工作台</span>
+  </div>
+  <div class="hero-diagram">
+    <div class="mermaid">
+flowchart LR
+    A["📖 学习"] --> B["🔍 检测"]
+    B --> C["📊 报告"]
+    C --> D["🧭 导航"]
+    D --> A
+    C --> E["🏛 Wiki 永久沉淀"]
+    </div>
+  </div>
+</header>
+
+<!-- Overview -->
+<section class="section" id="overview">
+  <h2>📐 系统全景</h2>
+  <p class="section-desc">三个子系统各司其职，配合起来就是一个完整的学习操作系统。</p>
+
+  <div class="diagram-wrap">
+    <div class="mermaid">
+flowchart TD
+    subgraph Work["🏗 科目工作台（工地）"]
+        direction TB
+        Notes["📝 笔记/ 你手写的理解"]
+        Concepts["💡 概念/ 学习中的草稿概念页"]
+        Reports["📊 检测报告/ AI 生成的检测记录"]
+        Framework["🗺 框架/ AI 梳理的知识地图"]
+        Notes --> Concepts
+        Concepts --> Reports
+    end
+
+    subgraph KC["🔍 knowledge-check（检测引擎）"]
+        direction TB
+        Mode1["梳理框架"]
+        Mode2["交互检测"]
+        Mode3["生成报告"]
+        Mode4["导航推荐"]
+        Mode1 --> Mode2 --> Mode3 --> Mode4
+    end
+
+    subgraph Wiki["🏛 Wiki 维基（博物馆）"]
+        direction TB
+        WikiConcept["wiki/概念/ 永久精华概念页"]
+        Index["wiki/.index.md 全局索引"]
+        Log["wiki/.log.md 操作日志"]
+        WikiConcept --> Index
+    end
+
+    Concepts -.->|"mastery ≥ 0.75<br/>说「存入 wiki」"| WikiConcept
+    Notes --> Mode1
+    KC --> Reports
+    Reports -.->|"写回 mastery"| Concepts
+    </div>
+  </div>
+
+  <div class="three-col" style="margin-top:24px;">
+    <div class="card">
+      <h4><span class="card-icon">🏗</span> 科目工作台 = 工地</h4>
+      <p>每门课一个文件夹。笔记、概念、检测报告全放这。可以乱——你在里面学、测、改、迭代。</p>
+    </div>
+    <div class="card">
+      <h4><span class="card-icon">🔍</span> knowledge-check = 质检员</h4>
+      <p>五个模式覆盖完整学习循环。自适应难度、识破 9 种假装理解、生成可视化热力图报告。</p>
+    </div>
+    <div class="card">
+      <h4><span class="card-icon">🏛</span> Wiki = 博物馆</h4>
+      <p>跨学科的永久知识库。概念在工地打磨好了、掌握度 ≥ 75%，晋升到 wiki 成为永久资产。</p>
+    </div>
+  </div>
+
+  <div class="callout" style="margin-top:24px;">
+    <p><strong>黄金法则：</strong>工地可以乱，博物馆要干净。不要边学边往 wiki 塞——wiki 里只放你愿意一年后还能翻出来看的东西。</p>
+  </div>
+</section>
+
+<!-- Walkthrough -->
+<section class="section" id="walkthrough">
+  <h2>🎬 完整实例：学一个概念的全流程</h2>
+  <p class="section-desc">以学习 <strong>Hook（钩子机制）</strong> 为例——这是 Agent 开发中的核心概念。跟一遍你就懂了整个系统怎么运转。</p>
+
+  <div class="step">
+    <div class="step-num blue">1</div>
+    <div class="step-body">
+      <h4>📥 看视频，做笔记</h4>
+      <p>在 B 站看完 Hook 章节。打开 Obsidian，在 <code>Agent开发/笔记/03-Hook.md</code> 写下你的理解。</p>
+      <span class="code-snippet">
+        <span class="dir">Agent开发/笔记/03-Hook.md</span><br>
+        ## Hook 机制<br>
+        - 核心要点：事件触发 → 自动执行<br>
+        - 我的疑问：Hook 和 Subagent 到底谁管谁？
+      </span>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num green">2</div>
+    <div class="step-body">
+      <h4>🔍 检测理解</h4>
+      <p>在对话中说：<strong>「检测我 Hook」</strong>。系统自动进入微检测模式，出 2-4 道题。</p>
+      <span class="code-snippet">
+        <strong>你：</strong>检测我 Hook<br><br>
+        <strong>系统：</strong>🔍 Q1 [概念本质]：用你自己的话，Hook 到底是什么？<br><br>
+        <strong>你：</strong>它是事件感应器——当 X 发生时自动执行 Y，不改变 X 和 Y，只做微小连接。<br><br>
+        <strong>系统：</strong>到位的。🔍 Q2 [概念关联]：Hook 和 Subagent 的区别在哪？<br><br>
+        <strong>你：</strong>Hook 是旁观者——拦截事件、做检查。Subagent 是执行者——领任务、干活、返回结果。Hook 没有状态，Subagent 有。<br><br>
+        <strong>系统：</strong>✅ 已理解 (0.90)。核心要点全部到位。
+      </span>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num violet">3</div>
+    <div class="step-body">
+      <h4>📊 自动生成报告</h4>
+      <p>检测结束后，系统自动生成报告并写入三个地方：</p>
+      <span class="code-snippet">
+        ✅ 检测报告 → <span class="file">Agent开发/检测报告/检测报告-Hook-2026-07-20.md</span><br>
+        ✅ 概念页 mastery 更新 → <span class="file">Agent开发/概念/Hook.md</span> YAML 中 mastery: 0.90<br>
+        ✅ 知识库持久化 → <span class="file">knowledge-base/Agent开发.json</span> 追加一条 detection 记录
+      </span>
+      <p style="margin-top:12px;">
+        <span class="tag tag-green">新</span> 五档评分（0.90/0.75/0.50/0.35/0.15）让追踪更精细。<br>
+        <span class="tag tag-green">新</span> 检测后追问「题目戳到盲区了吗？」→ 校准后续出题难度。
+      </p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num yellow">4</div>
+    <div class="step-body">
+      <h4>⬆️ 晋升到 Wiki</h4>
+      <p>mastery 0.90 ≥ 0.75，而且 Hook 是跨学科通用概念（Git Hook、React 生命周期 Hook 都是同类模式）。说：<strong>「把 Hook 存入 wiki」</strong></p>
+      <span class="code-snippet">
+        <strong>你：</strong>把 Hook 存入 wiki<br><br>
+        <strong>系统：</strong>已从 <span class="file">Agent开发/概念/Hook.md</span> 提取精华版，<br>
+        写入 <span class="file">wiki/概念/Hook.md</span>（跨学科通用版）。<br>
+        已更新 <span class="file">wiki/.index.md</span> + <span class="file">wiki/.log.md</span>。
+      </span>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num orange">5</div>
+    <div class="step-body">
+      <h4>🔗 横向关联</h4>
+      <p>系统自动检查：wiki 里有没有和 Hook 相关的概念？</p>
+      <span class="code-snippet">
+        发现 <span class="file">wiki/概念/Git版本控制.md</span> 里提到「Git Hook」<br>
+        发现 <span class="file">wiki/AI学习/Agent.md</span> 里提到「工具调用拦截」<br>
+        → 自动在 Hook.md 和这两篇之间加上交叉链接。
+      </span>
+      <p style="margin-top:12px;">
+        <span class="tag tag-green">新</span> concepts.json 跨科目概念索引让这个步骤自动化了。
+      </p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num red">6</div>
+    <div class="step-body">
+      <h4>🔄 下次检测自动回顾</h4>
+      <p>一周后你学 pipeline()。说「检测我 pipeline」→ 系统先扫描。</p>
+      <span class="code-snippet">
+        <strong>系统：</strong>🔍 Q0 [回顾]：上次你在「Hook与Subagent职责区分」上<br>
+        得分为 0.50。现在补上了吗？——简单说下两者的核心区别。<br><br>
+        <strong>你：</strong>[答对] → 系统记录 progress: 0.50→0.75<br>
+        <span class="tag tag-green">新</span> 检测前自动回顾 + Spaced Repetition 扫描过期概念
+      </span>
+    </div>
+  </div>
+</section>
+
+<!-- Three Systems -->
+<section class="section" id="systems">
+  <h2>⚙️ 三大子系统详解</h2>
+  <p class="section-desc">每个子系统的职责、触发方式、输入输出。</p>
+
+  <!-- Tabs -->
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab(event, 'tab-kc')">🔍 knowledge-check</button>
+    <button class="tab-btn" onclick="switchTab(event, 'tab-workbench')">🏗 科目工作台</button>
+    <button class="tab-btn" onclick="switchTab(event, 'tab-wiki')">🏛 Wiki 维基</button>
+  </div>
+
+  <!-- Tab: knowledge-check -->
+  <div class="tab-panel active" id="tab-kc">
+    <div class="card-grid">
+      <div class="card">
+        <h4>模式零：初始化</h4>
+        <p>第一次学某个科目时触发。快速确认：学什么范围？什么目标？用什么资料？</p>
+        <p style="margin-top:8px;"><span class="tag tag-green">新</span> 首次检测时轻量追问，不回答不阻塞。</p>
+      </div>
+      <div class="card">
+        <h4>模式一：专家梳理</h4>
+        <p>说<strong>「梳理 Hook」</strong> → AI 拆知识点、打标签（重点/难点/易错点/偏点）、画依赖图、出检测题集。支持 12 个学科 persona。</p>
+        <p style="margin-top:8px;"><span class="tag tag-green">新</span> 新增 Vibecoding/Agent开发 persona。</p>
+      </div>
+      <div class="card">
+        <h4>模式二：交互检测</h4>
+        <p>说<strong>「检测我」</strong> → 自适应出题。识破 9 种假装理解（术语护盾、循环论证、步骤复读机…）。完整检测 5-8 题，微检测 2-4 题。</p>
+        <p style="margin-top:8px;"><span class="tag tag-green">新</span> 第零步回顾 + Spaced Repetition 扫描。</p>
+      </div>
+      <div class="card">
+        <h4>模式三：报告生成</h4>
+        <p>自动生成 9 板块 Markdown 报告 + HTML 交互式热力图。后台运行不阻塞。写回概念页 YAML、更新知识库 JSON。</p>
+        <p style="margin-top:8px;"><span class="tag tag-green">新</span> 子代理失败通知 + 题质量自评。</p>
+      </div>
+      <div class="card">
+        <h4>模式四：导航推荐</h4>
+        <p>说<strong>「接下来学什么」</strong> → 前置依赖检查 + 后续路线 + 横向关联 + 兴趣匹配（🔥💡⚡☕ 优先级矩阵）。</p>
+      </div>
+      <div class="card">
+        <h4>模式五：总热力图</h4>
+        <p>说<strong>「给我总览」</strong> → 科目级全局掌握率热力图。按章节看，红色=弱、绿色=强。最薄弱的 3 个章节优先补。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab: Workbench -->
+  <div class="tab-panel" id="tab-workbench">
+    <h3>标准目录结构</h3>
+    <div class="folder-tree">
+<span class="dir">Agent开发/</span>                        <span class="comment">← 科目根目录</span>
+├── <span class="file">README.md</span>                     <span class="comment">← 仪表盘（进度+掌握率+薄弱点）</span>
+├── <span class="dir">笔记/</span>                          <span class="comment">← 你的手写笔记</span>
+│   ├── 01-环境搭建.md
+│   ├── 02-工程化控制.md
+│   └── 03-Agent开发实战.md
+├── <span class="dir">概念/</span>                          <span class="comment">← 核心概念深度页（一个概念一个文件）</span>
+│   ├── Hook.md                         <span class="comment">← mastery 0.90</span>
+│   ├── Subagent.md
+│   └── pipeline.md
+├── <span class="dir">检测报告/</span>                      <span class="comment">← AI 生成的检测记录</span>
+│   ├── 检测报告-Hook-2026-07-20.md
+│   └── 检测报告总览.md
+├── <span class="dir">框架/</span>                          <span class="comment">← AI 梳理的知识地图</span>
+├── <span class="dir">思维导图/</span>                      <span class="comment">← XMind/Canvas 导出的图片</span>
+├── <span class="dir">原始资料/</span>                      <span class="comment">← 不可变：课程链接、Clippings</span>
+└── <span class="dir">实战/</span>                          <span class="comment">← 项目代码、踩坑记录</span>
+    </div>
+
+    <h3>学科适配</h3>
+    <table>
+      <tr><th>学科</th><th>概念/ →</th><th>实战/ →</th><th>新增</th></tr>
+      <tr><td><strong>数学</strong></td><td>题型/</td><td>习题/</td><td>错题/、公式卡/</td></tr>
+      <tr><td><strong>英语</strong></td><td>单词/ + 语法/</td><td>阅读/ 听力/ 写作/ 口语/</td><td>错题/</td></tr>
+      <tr><td><strong>408 理论</strong></td><td>概念/（保留）</td><td>—</td><td>—</td></tr>
+      <tr><td><strong>408 实践</strong></td><td>概念/（保留）</td><td>算法/ + 代码/</td><td>错题/</td></tr>
+      <tr><td><strong>Vibecoding</strong></td><td>概念/（保留）</td><td>实战/（保留）</td><td>—</td></tr>
+    </table>
+    <p style="font-size:13px; color:var(--text-muted); margin-top:4px;">原则：文件夹名必须反映你在这个学科里<strong>实际在干什么</strong>。数学不按"概念"学——你面对的是题型，不是概念。</p>
+  </div>
+
+  <!-- Tab: Wiki -->
+  <div class="tab-panel" id="tab-wiki">
+    <h3>三层架构（Karpathy LLM Wiki 模式）</h3>
+    <table>
+      <tr><th>层级</th><th>说明</th><th>对应目录</th></tr>
+      <tr><td><strong>原始资料</strong></td><td>不可变，AI 读取不修改</td><td><code>raw/</code></td></tr>
+      <tr><td><strong>维基</strong></td><td>AI 生成维护的页面</td><td><code>wiki/</code></td></tr>
+      <tr><td><strong>模式</strong></td><td>CLAUDE.md + 工作流指南</td><td><code>CLAUDE.md</code> + <code>wiki/.workflow</code></td></tr>
+    </table>
+
+    <h3>三个核心操作</h3>
+    <div class="three-col" style="margin-top:16px;">
+      <div class="card">
+        <h4>🍽️ 摄入 (Ingest)</h4>
+        <p>说<strong>「摄入 [[文件]]」</strong> → AI 读原始资料 → 和你讨论要点 → 写入维基摘要页 → 更新索引和日志。</p>
+      </div>
+      <div class="card">
+        <h4>🔍 查询 (Query)</h4>
+        <p>说<strong>「维基里关于 X 都说了什么」</strong> → AI 从 index 找相关页 → 读取 → 综合回答。好的回答可以归档为维基新页面。</p>
+      </div>
+      <div class="card">
+        <h4>🧹 巡检 (Lint)</h4>
+        <p>说<strong>「巡检」</strong> → AI 检查矛盾、过时、孤岛页面、缺失交叉引用。输出报告，你选要修的。</p>
+      </div>
+    </div>
+
+    <h3 style="margin-top:24px;">⬆️ 晋升 (Promote) — 从工地到博物馆</h3>
+    <p>当 <code>科目/概念/</code> 中的概念 mastery ≥ 0.75，且概念跨学科通用 → 说<strong>「把 X 存入 wiki」</strong></p>
+    <p style="font-size:13px; color:var(--text-muted);">AI 会从科目草稿页提取精华，改写成跨学科通用版，写入 <code>wiki/概念/</code>，更新 index 和 log。</p>
+  </div>
+
+  <div class="diagram-wrap" style="margin-top:24px;">
+    <div class="mermaid">
+flowchart TD
+    Raw["📥 raw/ 原始资料"] -->|"摄入"| WikiConcept["🏛 wiki/概念/ 精华页"]
+
+    Raw -->|"你边看边写"| SubjectNote["📝 科目/笔记/"]
+    SubjectNote -->|"提炼"| SubjectConcept["💡 科目/概念/ 草稿"]
+
+    SubjectConcept -->|"说「检测我」"| Detect["🔍 knowledge-check 检测"]
+    Detect -->|"生成"| SubjectReport["📊 科目/检测报告/"]
+    SubjectReport -.->|"写回 mastery"| SubjectConcept
+
+    SubjectConcept -->|"mastery ≥ 0.75<br/>说「存入 wiki」"| WikiConcept
+
+    WikiConcept -->|"更新"| Index["wiki/.index.md"]
+    WikiConcept -->|"追加"| Log["wiki/.log.md"]
+    </div>
+  </div>
+</section>
+
+<!-- Subjects -->
+<section class="section" id="subjects">
+  <h2>📋 学科速查</h2>
+  <p class="section-desc">不同学科用不同的 workbench 配置和 knowledge-check 策略。</p>
+
+  <table>
+    <tr>
+      <th>学科</th><th>核心单位</th><th>knowledge-check 策略</th>
+      <th>特殊文件夹</th><th>检测频率</th>
+    </tr>
+    <tr>
+      <td><strong>数学</strong></td><td>定理 → 公式 → 题型</td>
+      <td>完整检测（变式题 + 追问前提条件）。不给选择题。不做微检测</td>
+      <td>题型/ 错题/ 公式卡/ 习题/</td><td>每章一次</td>
+    </tr>
+    <tr>
+      <td><strong>408 理论</strong></td><td>概念 → 原理 → 流程</td>
+      <td>完整检测 + 微检测（概念类策略：本质→关联→边界→应用）</td>
+      <td>保留概念/</td><td>每章一次 + 模糊概念随时微检测</td>
+    </tr>
+    <tr>
+      <td><strong>408 实践（数据结构）</strong></td><td>概念 → 算法 → 代码</td>
+      <td>完整检测（数学策略：不给选择题 + 追问每步为什么）</td>
+      <td>算法/ 代码/ 错题/</td><td>每章一次</td>
+    </tr>
+    <tr>
+      <td><strong>英语</strong></td><td>单词 → 语法 → 语感</td>
+      <td>暂不适用（skill 无英语 persona）——用错题自测代替</td>
+      <td>单词/ 语法/ 阅读/ 听力/ 写作/ 口语/</td><td>自定</td>
+    </tr>
+    <tr>
+      <td><strong>Vibecoding/工具</strong></td><td>概念 → 配置 → 实操</td>
+      <td>微检测为主（概念粒度小）。完整检测仅用于大章节</td>
+      <td>保留概念/ 保留实战/</td><td>每个概念一次</td>
+    </tr>
+  </table>
+</section>
+
+<!-- Quick Start -->
+<section class="section" id="quickstart">
+  <h2>🚀 快速上手</h2>
+  <p class="section-desc">30 秒搭好一个科目，3 分钟跑通完整闭环。</p>
+
+  <h3>第一步：建文件夹</h3>
+  <div class="folder-tree">
+<span class="dir">Agent开发/</span>
+├── <span class="file">README.md</span>
+├── <span class="dir">笔记/</span>
+├── <span class="dir">概念/</span>
+├── <span class="dir">检测报告/</span>
+├── <span class="dir">框架/</span>
+├── <span class="dir">思维导图/</span>
+├── <span class="dir">原始资料/</span>
+└── <span class="dir">实战/</span>
+  </div>
+
+  <h3>第二步：触发句速查</h3>
+  <table>
+    <tr><th>你想做什么</th><th>对 AI 说</th><th>触发系统</th></tr>
+    <tr><td>开始学一门课</td><td>「我要学 Agent开发，用 B站课程」</td><td>模式零（搭全局框架）</td></tr>
+    <tr><td>学之前先梳理</td><td>「梳理 Hook 这章」</td><td>模式一（expert-agent 生成框架）</td></tr>
+    <tr><td>学完检测自己</td><td>「检测我」</td><td>模式二（完整检测 5-8 题）</td></tr>
+    <tr><td>检测一个概念</td><td>「检测我 Hook」</td><td>模式二（微检测 2-4 题）</td></tr>
+    <tr><td>看全局掌握情况</td><td>「给我总览」</td><td>模式五（总热力图）</td></tr>
+    <tr><td>规划下一步</td><td>「接下来学什么」</td><td>模式四（导航推荐）</td></tr>
+    <tr><td>摄入新资料</td><td>「摄入 [[文件]]」</td><td>Wiki Ingest</td></tr>
+    <tr><td>查询知识库</td><td>「维基里关于 X 都说了什么」</td><td>Wiki Query</td></tr>
+    <tr><td>晋升概念</td><td>「把 Hook 存入 wiki」</td><td>Wiki Promote</td></tr>
+    <tr><td>全局健康检查</td><td>「巡检」</td><td>Wiki Lint</td></tr>
+  </table>
+
+  <h3>第三步：跑通一个完整循环</h3>
+  <div class="diagram-wrap">
+    <div class="mermaid">
+flowchart LR
+    A["说「梳理 Hook」"] --> B["看视频/做笔记"]
+    B --> C["说「检测我 Hook」"]
+    C --> D["看报告 + 行动方案"]
+    D --> E{"mastery ≥ 0.75？"}
+    E -- 是 --> F["说「把 Hook 存入 wiki」"]
+    E -- 否 --> G["补漏 → 重新检测"]
+    G --> C
+    F --> H["说「接下来学什么」→ 继续"]
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section" id="faq">
+  <h2>❓ 常见问题</h2>
+
+  <div class="card-grid">
+    <div class="card">
+      <h4>这套系统和直接让 AI 出题有什么区别？</h4>
+      <p>三个核心区别：① AI 出题后结果丢了——这套系统跨会话持久化，关了重开还记得；② 普通 AI 无法识破 9 种假装理解——你满口术语 AI 可能说「讲得真好」，但 knowledge-check 会说「用大白话解释」；③ 有热力图和趋势追踪——不是一次性的，是长期积累。</p>
+    </div>
+    <div class="card">
+      <h4>我需要同时用三个系统吗？</h4>
+      <p>不需要。学习阶段主要用<strong>科目工作台 + knowledge-check</strong>。Wiki 是「毕业」阶段用的——概念学扎实了、掌握度 ≥ 75% 了、觉得这是个通用概念了，才晋升到 wiki。</p>
+    </div>
+    <div class="card">
+      <h4>这套系统适合什么学科？</h4>
+      <p>概念型学科（408、哲学、工具链）最适合——检测策略专门优化。数学也可以用（走变式题策略），但英语暂不完全适配（skill 缺少英语检测 persona，建议用错题自测代替）。</p>
+    </div>
+    <div class="card">
+      <h4>我学的不是考研内容，能用吗？</h4>
+      <p>能。Vibecoding、Agent 开发等实操型内容更适合<strong>微检测模式</strong>。expert-agent 已新增 Vibecoding persona。检测重点从「会不会做题」转为「能不能自己配出来、能不能解释为什么」。</p>
+    </div>
+    <div class="card">
+      <h4>每次检测要多久？</h4>
+      <p>微检测（单个概念）2-3 分钟。完整检测（一整章）5-10 分钟。框架梳理约 30 秒。报告生成后台运行不占你的时间。</p>
+    </div>
+    <div class="card">
+      <h4>文件夹结构是固定的吗？</h4>
+      <p>骨架固定（README + 笔记 + 概念 + 检测报告 + 框架 + 原始资料），但子文件夹名按学科调整。数学的「概念/」换成「题型/」，英语的「实战/」拆成阅读/听力/写作/口语/。原则是文件夹名必须反映你实际在干什么。</p>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <p>Jerry 的学习操作系统 · 基于 knowledge-check v1.1 + Karpathy LLM Wiki + Obsidian</p>
+  <p style="margin-top:4px;">2026-07-20 · 配套文件见 <code>raw/学习系统说明书/</code></p>
+</footer>
+
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
+
+  function switchTab(event, tabId) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    event.target.classList.add('active');
+    document.getElementById(tabId).classList.add('active');
+  }
+
+  // Smooth scroll for nav links
+  document.querySelectorAll('.top-nav a[href^="#"]').forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+</script>
+
+</body>
+</html>

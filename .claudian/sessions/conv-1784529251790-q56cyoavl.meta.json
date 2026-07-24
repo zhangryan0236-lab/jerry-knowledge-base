@@ -1,0 +1,25 @@
+{
+  "id": "conv-1784529251790-q56cyoavl",
+  "providerId": "claude",
+  "title": "Summarize hooks usage and development",
+  "titleGenerationStatus": "success",
+  "createdAt": 1784529251790,
+  "updatedAt": 1784537392225,
+  "lastResponseAt": 1784529569351,
+  "sessionId": "ba6b0d33-1c94-4048-804f-bdf7abec889e",
+  "selectedModel": "opus",
+  "providerState": {
+    "providerSessionId": "ba6b0d33-1c94-4048-804f-bdf7abec889e"
+  },
+  "currentNote": "Clippings/Bilibili/黑马Vibe Coding零基础入门，vibecoding项目，涵盖Claude Code、Cursor、Codex、SDD、LangChain、Agent开发-P21-20-Agent-自定义Hook钩子拦截工具调用.md",
+  "usage": {
+    "model": "opus",
+    "inputTokens": 70716,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 3200,
+    "contextWindow": 200000,
+    "contextWindowIsAuthoritative": true,
+    "contextTokens": 73916,
+    "percentage": 37
+  }
+}

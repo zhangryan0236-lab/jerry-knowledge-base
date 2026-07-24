@@ -1,0 +1,24 @@
+{
+  "id": "conv-1784519034674-s8zqoa2af",
+  "providerId": "claude",
+  "title": "Explain what a hook is",
+  "titleGenerationStatus": "success",
+  "createdAt": 1784519034675,
+  "updatedAt": 1784529231853,
+  "lastResponseAt": 1784519602246,
+  "sessionId": "249c96ee-2cd2-45e7-9d35-6a44b83a7ef2",
+  "selectedModel": "opus",
+  "providerState": {
+    "providerSessionId": "249c96ee-2cd2-45e7-9d35-6a44b83a7ef2"
+  },
+  "usage": {
+    "model": "opus",
+    "inputTokens": 46410,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 0,
+    "contextWindow": 200000,
+    "contextWindowIsAuthoritative": true,
+    "contextTokens": 46410,
+    "percentage": 23
+  }
+}

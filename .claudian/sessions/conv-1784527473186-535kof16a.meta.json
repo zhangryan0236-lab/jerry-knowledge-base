@@ -1,0 +1,24 @@
+{
+  "id": "conv-1784527473186-535kof16a",
+  "providerId": "claude",
+  "title": "Explain what React hooks are",
+  "titleGenerationStatus": "success",
+  "createdAt": 1784527473186,
+  "updatedAt": 1784537395488,
+  "lastResponseAt": 1784533946498,
+  "sessionId": "34a78961-5c85-48af-9f09-cabd35abbb5f",
+  "selectedModel": "sonnet",
+  "providerState": {
+    "providerSessionId": "34a78961-5c85-48af-9f09-cabd35abbb5f"
+  },
+  "usage": {
+    "model": "sonnet",
+    "inputTokens": 338,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 162304,
+    "contextWindow": 200000,
+    "contextWindowIsAuthoritative": true,
+    "contextTokens": 162642,
+    "percentage": 81
+  }
+}

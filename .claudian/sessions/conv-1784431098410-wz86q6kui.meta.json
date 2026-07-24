@@ -1,0 +1,21 @@
+{
+  "id": "conv-1784431098410-wz86q6kui",
+  "providerId": "claude",
+  "title": "Reorganize vault into three-layer architecture",
+  "titleGenerationStatus": "success",
+  "createdAt": 1784431098410,
+  "updatedAt": 1784442670853,
+  "lastResponseAt": 1784431418624,
+  "sessionId": null,
+  "selectedModel": "claude-code/deepseek-v4-pro",
+  "usage": {
+    "model": "deepseek-v4-pro",
+    "inputTokens": 129,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 76032,
+    "contextWindow": 200000,
+    "contextTokens": 76161,
+    "percentage": 38,
+    "contextWindowIsAuthoritative": true
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "frames": [
+    {
+      "url": "http://localhost:8765/%E5%AD%A6%E4%B9%A0%E7%9C%8B%E6%9D%BF.html",
+      "displayName": "📊 学习看板",
+      "icon": "layout-dashboard",
+      "openInCenter": true,
+      "forceIframe": true,
+      "zoomLevel": 1,
+      "customCss": "",
+      "customJs": ""
+    }
+  ],
+  "padding": 0
+}

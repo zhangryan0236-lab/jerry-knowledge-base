@@ -1,0 +1,25 @@
+{
+  "id": "conv-1784537455344-f9saeg1cr",
+  "providerId": "claude",
+  "title": "Summarize LangChain RAG project to notes folder",
+  "titleGenerationStatus": "success",
+  "createdAt": 1784537455344,
+  "updatedAt": 1784550776188,
+  "lastResponseAt": 1784550496299,
+  "sessionId": "6ef69035-acad-45e0-b889-172d7b19c08b",
+  "selectedModel": "opus",
+  "providerState": {
+    "providerSessionId": "6ef69035-acad-45e0-b889-172d7b19c08b"
+  },
+  "currentNote": "raw/vibecoding-笔记/原始资料/黑马Vibe Coding零基础入门，vibecoding项目，涵盖Claude Code、Cursor、Codex、SDD、LangChain、Agent开发-P22-21-RAG项目-方案讨论和初版代码生成.md",
+  "usage": {
+    "model": "opus",
+    "inputTokens": 53605,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 114,
+    "contextWindow": 200000,
+    "contextWindowIsAuthoritative": true,
+    "contextTokens": 53719,
+    "percentage": 27
+  }
+}

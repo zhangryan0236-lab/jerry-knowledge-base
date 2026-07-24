@@ -1,0 +1,3 @@
+- [User Profile](user-profile.md) — 深层画像：双超我结构、六大特质、内耗机制、考研困境、职业方向
+- [Teaching Style](feedback-teaching-style.md) — 先类比后原理，认真回应追问
+- [Guiding Jerry](feedback-guiding-jerry.md) — 防内耗干预：推行动不陪分析、考研策略、鸡血递减应对

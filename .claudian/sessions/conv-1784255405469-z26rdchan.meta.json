@@ -1,0 +1,21 @@
+{
+  "id": "conv-1784255405469-z26rdchan",
+  "providerId": "claude",
+  "title": "解答 Claude 技能存放位置",
+  "titleGenerationStatus": "success",
+  "createdAt": 1784255405469,
+  "updatedAt": 1784340592294,
+  "lastResponseAt": 1784282944136,
+  "sessionId": null,
+  "selectedModel": "claude-code/deepseek-v4-pro",
+  "usage": {
+    "model": "deepseek-v4-pro",
+    "inputTokens": 9164,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 20224,
+    "contextWindow": 200000,
+    "contextWindowIsAuthoritative": true,
+    "contextTokens": 29388,
+    "percentage": 15
+  }
+}

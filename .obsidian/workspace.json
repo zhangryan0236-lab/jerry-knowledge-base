@@ -1,0 +1,262 @@
+{
+  "main": {
+    "id": "5324373015726ba8",
+    "type": "split",
+    "children": [
+      {
+        "id": "bd7dba7392b630bf",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "f73ef1dbf0a9cfc4",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "新标签页"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "6f6fb80272785cb8",
+    "type": "split",
+    "children": [
+      {
+        "id": "c4030dca364034dc",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "2c760bffe33d5359",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "文件列表"
+            }
+          },
+          {
+            "id": "d2a9574f45a18da2",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "搜索"
+            }
+          },
+          {
+            "id": "6c443b15a8f42cef",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "书签"
+            }
+          },
+          {
+            "id": "14209cba89f48d49",
+            "type": "leaf",
+            "state": {
+              "type": "recent-files",
+              "state": {},
+              "icon": "clock",
+              "title": "Recent files"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 200
+  },
+  "right": {
+    "id": "2ec50820fa287fe2",
+    "type": "split",
+    "children": [
+      {
+        "id": "41a47b74dc0589e2",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "631f4f5217b3f473",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Thinking.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Thinking 的反向链接列表"
+            }
+          },
+          {
+            "id": "9d05d095ac3dd73a",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "欢迎.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "欢迎 的出链列表"
+            }
+          },
+          {
+            "id": "b5653c3dd8276af8",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "标签"
+            }
+          },
+          {
+            "id": "e6b7654e1e2fa9bf",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "添加笔记属性"
+            }
+          },
+          {
+            "id": "85d1af6a4a1dcaa6",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "如何进行输入？/如何进行正确的输入.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "如何进行正确的输入 的大纲"
+            }
+          },
+          {
+            "id": "d7c2c3f2bb8a4951",
+            "type": "leaf",
+            "state": {
+              "type": "calendar",
+              "state": {},
+              "icon": "calendar-with-checkmark",
+              "title": "Calendar"
+            }
+          },
+          {
+            "id": "2eed92a190b1b466",
+            "type": "leaf",
+            "state": {
+              "type": "claudian-view",
+              "state": {},
+              "icon": "bot",
+              "title": "Claudian"
+            }
+          }
+        ],
+        "currentTab": 6
+      }
+    ],
+    "direction": "horizontal",
+    "width": 590.5
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "homepage:Open homepage": false,
+      "realclaudian:Open Claudian": false,
+      "switcher:打开快速切换": false,
+      "graph:查看关系图谱": false,
+      "canvas:新建白板": false,
+      "daily-notes:打开/创建今天的日记": false,
+      "templates:插入模板": false,
+      "command-palette:打开命令面板": false,
+      "bases:新建数据库": false,
+      "omnisearch:Omnisearch": false,
+      "obsidian-weread-plugin:打开微信读书书架": false,
+      "obsidian-excalidraw-plugin:新建绘图文件": false,
+      "smart-connections:Smart Connections: Open connections view": false,
+      "smart-connections:Toggle Footer Connections": false,
+      "smart-connections:Smart Connections: Open random connection": false
+    }
+  },
+  "active": "f73ef1dbf0a9cfc4",
+  "lastOpenFiles": [
+    "Home.md",
+    "学渣守护者/维基/人际与学业生态.md",
+    "Excalidraw/Drawing 2026-07-24 16.30.47.excalidraw.md",
+    "Excalidraw",
+    "wiki/学习系统/问题挖掘与学习导航系统.md",
+    "wiki/学习系统/学习流-实践认识闭环v1.0.md",
+    "IT咖啡馆/IT咖啡馆的内容/2024-12-29_xxxx_Github一周热点55期，架构师必备指南、自动化测试工具包 GitHub 一周热点汇总第54期(20241222-1228），本期内容包括架构师必备指南、自动.md",
+    "IT咖啡馆/IT咖啡馆的内容/2024-12-31_xxxx_2024 年度Github热点汇总 2024 github 年度汇总来了。这一次我把时间维度从一周，拉长到一年，带你看看这一年里你不能错过的热门项目。#GitH.md",
+    "IT咖啡馆/IT咖啡馆的内容/2025-01-05_xxxx_「Github一周热点56期」DeepSeek、免电子书等 GitHub 一周热点汇总第56期(20241229-2025104），本期内容包括DeepSeek.md",
+    "IT咖啡馆/IT咖啡馆的内容/2025-01-06_xxxx_花小钱办大事？！能提升Mac 使用体验的外设分享和选择建议 之前和大家聊过如果上手Mac mini，那今天再和大家分享一些，可以显著提升Mac使用体验的外设产品.md",
+    "IT咖啡馆/IT咖啡馆的内容/2025-01-09_xxxx_小白也能听懂的DeepSeek深度解析，带你了解它的神秘 现在都在讨论DeepSeek，今天我就来深入聊一聊DeepSeek到底怎么样，好不好用，怎么用，以及技.md",
+    "IT咖啡馆/IT咖啡馆的内容/2025-01-12_xxxx_世界基础模型平台、区块链、AI搜索、国产CPU、PS4模拟器 GitHub 一周热点汇总第56期(20250105 - 111），本期内容包括新的区块链、世界基.md",
+    "IT咖啡馆/IT咖啡馆的内容/2025-01-13_xxxx_把显示器打造成产力工具！？程序员如何选择合适的编程显示器 程序员使用最多生产力工具就是键盘、鼠标、显示器，作为资深牛马，今天就分享下怎么选一个适合的显示器。#程.md",
+    "IT咖啡馆/IT咖啡馆的内容/2025-01-19_xxxx_「Github一周热点58期」自托管 AI 代码助手等 GitHub 一周热点汇总第58期(20250112 - 118），本期内容包括自托管 AI 代码助手、.md",
+    "IT咖啡馆/IT咖啡馆的内容/2025-01-21_xxxx_DeepSeek R1发布，同等性能只要150的价格 DeepSeek再一次的震撼了整个人工智能领域，深度思考模型R1在价格与开源化上震撼市场。#Deepsee.md",
+    "IT咖啡馆/IT咖啡馆的内容/2025-01-22_xxxx_平替Cursor？字节出手AI编程助手 平替Cursor？字节AI编程助手，Claude3.5免费用#程序员 #ai #一分钟干货教学 #代码 #Cursor.md",
+    "IT咖啡馆/IT咖啡馆的内容/2025-01-25_xxxx_Github一周热点59期」DeepSeek R1等 GitHub 一周热点汇总第59期(20250119 - 125），本期内容包括DeepSeek R1推理.md",
+    "IT咖啡馆/IT咖啡馆的内容/2025-01-27_xxxx_DeepSeek R1试用、解析加部署，一个视频速通R1模型 DeepSeek R1试用、解析加部署 #人工智能 #deepseek#大模型 #内容启发搜索 #.md",
+    "IT咖啡馆/IT咖啡馆的内容/2025-01-28_xxxx_打破算力泡沫，DeepSeek发布janus模型 吊打DALL-E3，DeepSeek多模态模型Janus来了#人工智能 #DeepSeek #Github #.md",
+    "IT咖啡馆/IT咖啡馆的内容/2025-02-07_xxxx_使用DeepSeek避免这5个误区，效果超过95%的人 整理下新手在使用DeepSeek时经常遇到的误区，让你的使用效果超过95%的人。#AI #DeepSee.md",
+    "IT咖啡馆/IT咖啡馆的内容/2025-02-09_xxxx_「Github一周热点60期」DeepSeek多模态等5个 GitHub 一周热点汇总第60期(20250126 - 28），本期内容包括端到端的基础模型平台、.md",
+    "IT咖啡馆/IT咖啡馆的内容/2025-02-14_xxxx_苹果看上它了？阿里最强视觉模型 Qwen2.5-VL测评解析 最近看到有新闻说，Apple选择阿里云 作为中国地区的AI提供商，而阿里云正好发布了Qwen2.5.md",
+    "IT咖啡馆/IT咖啡馆的内容/2025-02-16_xxxx_GitHub 一周热点汇总第61期 GitHub 一周热点汇总第61期(2025029 - 215），本期内容包括更快运行DeepSeek的推理框架、大模型微调.md",
+    "IT咖啡馆/IT咖啡馆的内容/2025-02-18_xxxx_地表最强？Grok3数据超强，但亮点确实不多 马斯克带着他的新模型grok3来了，数据上目前地表最强，但是感觉亮点不足。#人工智能 #Grok3 #openai.md",
+    "IT咖啡馆/IT咖啡馆的内容/2025-02-20_xxxx_DeepSeek王炸组合，打败99%人的学习方法，建议收藏 飞书的多维表格+加上DeepSeek绝对是王炸组合，在飞书多维表格里甚至可以同时批量使用R1来处理任.md",
+    "IT咖啡馆/IT咖啡馆的内容/2025-02-23_xxxx_「Github一周热点62期」DeepSeek 实用集成大全 GitHub 一周热点汇总第61期(20250216 - 222），本期内容包括DeepSeek.md",
+    "IT咖啡馆/IT咖啡馆的内容/2025-02-24_xxxx_技术解读，DeepSeek开源周第一弹：FlashMLA DeepSeek开源周第一个项目FlashMLA，为H架构 GPU优化的MLA解码内核，挑战算力极限#.md",
+    "IT咖啡馆/IT咖啡馆的内容",
+    "IT咖啡馆",
+    "视频1.mp4",
+    "videos/视频1.mp4",
+    "videos/c87e9115c8867b43782b2ddf170257ce.mp4",
+    "videos",
+    "新建文件夹",
+    "dashboard-inline.js.tmp.46872.ddf9cc45fa16",
+    "dashboard-inline.js.tmp.46872.7d612bf3aa27",
+    "系统/2-引擎/学习系统/如何进行“首次学习” AI Canvas.canvas",
+    "images/Pasted image 20260719102102.png",
+    "Pasted image 20260719102102.png"
+  ]
+}

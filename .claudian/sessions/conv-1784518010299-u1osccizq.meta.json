@@ -1,0 +1,25 @@
+{
+  "id": "conv-1784518010299-u1osccizq",
+  "providerId": "claude",
+  "title": "Read and follow article instructions",
+  "titleGenerationStatus": "success",
+  "createdAt": 1784518010300,
+  "updatedAt": 1784518713345,
+  "lastResponseAt": 1784518706421,
+  "sessionId": "7317acbb-f14f-4fdc-8a8b-07229e80641e",
+  "selectedModel": "sonnet",
+  "providerState": {
+    "providerSessionId": "7317acbb-f14f-4fdc-8a8b-07229e80641e"
+  },
+  "currentNote": "CLAUDE1.md",
+  "usage": {
+    "model": "sonnet",
+    "inputTokens": 33335,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 0,
+    "contextWindow": 200000,
+    "contextWindowIsAuthoritative": true,
+    "contextTokens": 33335,
+    "percentage": 17
+  }
+}
