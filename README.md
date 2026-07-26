@@ -1,3 +1,20 @@
+# Jerry 的个人学习与复盘系统
+
+这个仓库是 Jerry 的本地优先知识库，包含学习工作流、复盘记录、AI 军师诊断与项目进度。
+
+## 复盘军师工作台
+
+- [直接打开工作台](系统/3-方向盘/复盘系统/复盘军师工作台.html)
+- [阅读完整工作流](系统/3-方向盘/复盘系统/复盘军师工作流.md)
+- [使用说明](系统/3-方向盘/复盘系统/复盘军师工作台-使用说明.md)
+- [下载独立包（HTML + 工作流 + 使用说明）](系统/3-方向盘/复盘系统/复盘军师工作台-v1.0.zip)
+
+工作流：**复盘 → 军师追问 → 指出问题 → 同步进度 → 列好明日计划**。
+
+> 隐私说明：复盘原始记录、整理稿、诊断报告与项目进度默认保存在本地；工作台只在用户选择本地文件夹后写入。
+
+---
+
 # Karpathy-Inspired Claude Code Guidelines
 
 > Check out my new project [Multica](https://github.com/multica-ai/multica) — an open-source platform for running and managing coding agents with reusable skills.
