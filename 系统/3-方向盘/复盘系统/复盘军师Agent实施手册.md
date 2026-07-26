@@ -45,7 +45,7 @@ flowchart TB
 
 | 层 | 推荐技术 | 只负责什么 |
 |---|---|---|
-| 界面 | 先保留现有 HTML，后续再换 React | 输入、显示对话、显示进度和日历 |
+| 界面 | 独立军师驾驶舱；MVP 复用现有 HTML，后续升级 React | 对话、日历、证据链、实验、进度与周计划可视化 |
 | 接口 | FastAPI | 浏览器与 Agent 的唯一通信边界 |
 | 编排 | LangGraph | 节点顺序、暂停/恢复、分支、检查点 |
 | 推理 | OpenAI 或兼容模型 API | 回应、提问、结构化整理、假设生成 |
@@ -391,7 +391,7 @@ def can_propose_stable_profile(observations: list[Observation]) -> bool:
 6. **计划规则**：在非计划日测试“试图改周计划”是否被拒绝。
 7. **轻诊断**：读取最近 2—3 天，输出带证据和未知项的 JSON。
 8. **动态画像**：只写状态观察；连续运行至少 7 天后再调规则。
-9. **再做 UI**：把现有 HTML 从 localStorage 改为调用 API；最后才考虑 React、日历和图表。
+9. **再做驾驶舱 UI**：把现有 HTML 从 localStorage 改为调用 API；优先实现日历、问题证据链、实验看板和项目进度，再考虑 React 和更复杂图表。详见 [四大核心引擎设计](复盘军师四大核心引擎设计.md)。
 
 ## 11. 测试清单
 
@@ -436,6 +436,7 @@ def can_propose_stable_profile(observations: list[Observation]) -> bool:
 
 ## 参考
 
+- [四大核心引擎设计](复盘军师四大核心引擎设计.md)
 - [LangChain Agents 官方文档](https://docs.langchain.com/oss/python/langchain/agents)
 - [LangGraph 状态与图 API](https://docs.langchain.com/oss/python/langgraph/graph-api)
 - [LangGraph 持久化与检查点](https://docs.langchain.com/oss/python/langgraph/persistence)
