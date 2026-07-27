@@ -31,3 +31,13 @@ apps/review-adviser-agent/
 ```
 
 该脚本只配置当前 PowerShell 会话的环境变量。它不会移动 Windows、Python 或 Node.js 本体；这些程序若安装于 C 盘仍会从那里运行，但项目不会向 C 盘写入运行数据或包缓存。
+
+## 启动本地 MVP
+
+```powershell
+.\scripts\start-local.ps1
+```
+
+然后在浏览器打开 `http://127.0.0.1:8766`。服务只监听本机，不会暴露到公网。
+
+未填写 `.env` 中的模型 API Key 时，系统会使用本地降级追问，以便验证归档和线程恢复；填写 Key 后，追问自动改为 LLM 结构化输出。

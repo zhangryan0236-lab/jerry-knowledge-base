@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>复盘军师</title>
+  <style>
+    :root{--ink:#172033;--muted:#667085;--line:#d9e1ed;--paper:#f4f7fb;--panel:#fff;--blue:#355fca;--soft:#eaf0ff;--green:#087a5a}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.6 system-ui,-apple-system,"Microsoft YaHei",sans-serif}.app{max-width:1180px;margin:auto;padding:24px}.head{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:18px}.head h1{margin:0;font-size:1.75rem}.head p{margin:4px 0;color:var(--muted)}.grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(290px,.65fr);gap:18px}.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px}.panel h2{margin:0 0 4px;font-size:1.1rem}.sub{color:var(--muted);font-size:.9rem;margin:0 0 14px}textarea,input{width:100%;font:inherit;border:1px solid var(--line);border-radius:9px;padding:10px;color:var(--ink)}textarea{min-height:190px;resize:vertical}label{display:block;font-weight:650;margin:13px 0 6px}button{font:inherit;border:1px solid var(--line);border-radius:8px;background:#fff;padding:8px 11px;cursor:pointer}button.primary{background:var(--blue);border-color:var(--blue);color:#fff}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.conversation{margin-top:16px}.turn{border-left:3px solid var(--line);padding:10px 12px;margin:8px 0;background:#fbfcff}.turn.adviser{border-left-color:var(--blue)}.turn.me{border-left-color:var(--green)}.callout{margin-top:14px;padding:12px;border-radius:9px;background:var(--soft);color:#25488e}.project{border-top:1px solid var(--line);padding:13px 0}.project:first-of-type{border-top:0}.project h3{margin:0;font-size:1rem}.project p{margin:4px 0;color:var(--muted);font-size:.88rem}.badge{display:inline-block;padding:2px 7px;border-radius:999px;background:#eef2f7;color:#445066;font-size:.76rem}.empty{color:var(--muted);padding:8px 0}.hidden{display:none}@media(max-width:800px){.grid{grid-template-columns:1fr}.head{align-items:start;flex-direction:column}}
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header class="head"><div><h1>复盘军师</h1><p>先记录事实，再让军师一次只问一个关键问题。</p></div><span class="badge" id="status">本地 MVP</span></header>
+    <div class="grid">
+      <section class="panel"><h2>今日复盘</h2><p class="sub" id="reviewHint">写流水账即可；原文会自动归档，不会被整理版覆盖。</p><label for="date">日期</label><input id="date" type="date"><label for="raw">原始流水账</label><textarea id="raw" placeholder="今天发生了什么、学了什么？哪里卡住？有什么值得记住？明天最想先做什么？"></textarea><div class="actions"><button class="primary" id="start">交给军师</button><button id="reset" class="hidden">新建复盘</button></div><div class="conversation" id="conversation"></div><div id="replyBox" class="hidden"><label for="reply">回答军师的问题，或输入“整理吧”结束追问</label><textarea id="reply" style="min-height:105px"></textarea><div class="actions"><button class="primary" id="sendReply">继续</button></div></div><div class="callout hidden" id="progressNote"></div></section>
+      <aside class="panel"><h2>近期项目</h2><p class="sub">进度以完成证据和下一步为准，不以愿望百分比为准。</p><div id="projects"></div><div id="addProject"><label for="projectName">新项目</label><input id="projectName" placeholder="例如：高数极限"><label for="projectNext">下一步</label><input id="projectNext" placeholder="例如：独立完成第 4 题"><div class="actions"><button id="saveProject">添加项目</button></div></div></aside>
+    </div>
+  </main>
+  <script>
+    const $=id=>document.getElementById(id);let threadId=null;$('date').value=new Date().toISOString().slice(0,10);
+    const esc=s=>String(s||'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+    function renderThread(data){threadId=data.thread_id;$('raw').disabled=true;$('date').disabled=true;$('start').classList.add('hidden');$('reset').classList.remove('hidden');let html=`<div class="turn adviser"><b>军师</b><br>${esc(data.response)}</div>`;for(const item of data.dialogue){html+=`<div class="turn adviser"><b>军师</b><br>${esc(item.question)}</div><div class="turn me"><b>我</b><br>${esc(item.answer)}</div>`}if(data.phase==='awaiting_reply'&&data.question){html+=`<div class="turn adviser"><b>军师的问题</b><br>${esc(data.question)}</div>`;$('replyBox').classList.remove('hidden')}else{$('replyBox').classList.add('hidden');html+=`<div class="callout">已整理归档。下一步可在项目面板同步真实进度。</div>`}$('conversation').innerHTML=html;if(data.progress_note){$('progressNote').textContent=data.progress_note;$('progressNote').classList.remove('hidden')}}
+    async function request(url,options={}){const r=await fetch(url,{headers:{'Content-Type':'application/json'},...options});if(!r.ok)throw new Error((await r.json()).detail||'请求失败');return r.json()}
+    $('start').onclick=async()=>{try{const data=await request('/api/reviews',{method:'POST',body:JSON.stringify({date:$('date').value,raw_text:$('raw').value})});renderThread(data);loadProjects()}catch(e){alert(e.message)}};
+    $('sendReply').onclick=async()=>{try{const data=await request(`/api/reviews/${threadId}/reply`,{method:'POST',body:JSON.stringify({text:$('reply').value})});$('reply').value='';renderThread(data);loadProjects()}catch(e){alert(e.message)}};
+    $('reset').onclick=()=>location.reload();
+    async function loadProjects(){const projects=await request('/api/projects');$('projects').innerHTML=projects.length?projects.map(p=>`<article class="project"><h3>${esc(p.name)} <span class="badge">${esc(p.status)}</span></h3><p>阶段：${esc(p.stage||'未拆分')}</p><p>下一步：${esc(p.next_action||'待定义')}</p><p>证据：${p.evidence.length} 条${p.current_question?` · 当前问题：${esc(p.current_question)}`:''}</p></article>`).join(''):'<p class="empty">还没有项目。只添加近期真正推进的事项。</p>'}
+    $('saveProject').onclick=async()=>{try{await request('/api/projects',{method:'POST',body:JSON.stringify({name:$('projectName').value,next_action:$('projectNext').value})});$('projectName').value='';$('projectNext').value='';loadProjects()}catch(e){alert(e.message)}};loadProjects();
+  </script>
+</body>
+</html>
