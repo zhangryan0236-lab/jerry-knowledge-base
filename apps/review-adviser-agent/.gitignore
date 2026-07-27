@@ -1,4 +1,5 @@
 runtime/
+node_modules/
 .env
 backend/.venv/
 frontend/node_modules/

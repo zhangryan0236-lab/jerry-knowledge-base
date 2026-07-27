@@ -1,0 +1,14 @@
+{
+  "name": "review-adviser-agent",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Jerry 的本地复盘军师桌面程序",
+  "main": "desktop/main.cjs",
+  "scripts": {
+    "desktop": "electron ."
+  },
+  "devDependencies": {
+    "electron": "^37.2.6"
+  },
+  "allowScripts": {}
+}

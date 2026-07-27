@@ -32,7 +32,13 @@ apps/review-adviser-agent/
 
 该脚本只配置当前 PowerShell 会话的环境变量。它不会移动 Windows、Python 或 Node.js 本体；这些程序若安装于 C 盘仍会从那里运行，但项目不会向 C 盘写入运行数据或包缓存。
 
-## 启动本地 MVP
+## 作为桌面程序启动
+
+双击 [启动复盘军师.cmd](启动复盘军师.cmd)，会打开独立桌面窗口，并自动启动本地服务。
+
+首次使用前，需要在此目录运行一次 `npm install` 安装桌面壳依赖；依赖会安装在本项目的 `node_modules/`，缓存由启动脚本指向 D 盘。
+
+## 仅启动本地服务（调试）
 
 ```powershell
 .\scripts\start-local.ps1

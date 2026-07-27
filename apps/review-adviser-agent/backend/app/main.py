@@ -12,7 +12,7 @@ from .archive import archive_organized, archive_raw
 from .config import get_settings
 from .graph import build_review_graph
 from .progress import create_project, list_projects, sync_review_mentions, update_project
-from .schemas import CreateReviewRequest, ProjectCreate, ProjectUpdate, ProjectView, ReplyRequest, ThreadView
+from .schemas import CreateReviewRequest, ProjectCreate, ProjectUpdate, ProjectView, ReplyRequest, ReviewSummary, ThreadView
 from .store import ThreadStore
 
 
@@ -94,6 +94,19 @@ def get_review(thread_id: str) -> ThreadView:
     if thread is None:
         raise HTTPException(status_code=404, detail="复盘线程不存在")
     return to_view(thread)
+
+
+@app.get("/api/reviews", response_model=list[ReviewSummary])
+def list_reviews() -> list[dict]:
+    return [
+        {
+            "thread_id": item["id"],
+            "review_date": item["review_date"],
+            "phase": item["phase"],
+            "summary": item["raw_text"].replace("\n", " ")[:96],
+        }
+        for item in store.list_recent()
+    ]
 
 
 @app.get("/api/projects", response_model=list[ProjectView])

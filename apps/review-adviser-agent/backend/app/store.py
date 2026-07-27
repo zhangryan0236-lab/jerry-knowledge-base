@@ -78,6 +78,20 @@ class ThreadStore:
         result["dialogue"] = json.loads(result.pop("dialogue_json"))
         return result
 
+    def list_recent(self, limit: int = 90) -> list[dict]:
+        with sqlite3.connect(self.database_path) as conn:
+            conn.row_factory = sqlite3.Row
+            rows = conn.execute(
+                """
+                SELECT id, review_date, phase, raw_text
+                FROM review_threads
+                ORDER BY review_date DESC, created_at DESC
+                LIMIT ?
+                """,
+                (limit,),
+            ).fetchall()
+        return [dict(row) for row in rows]
+
     def update(self, thread_id: str, **changes: object) -> dict:
         current = self.get(thread_id)
         if current is None:

@@ -32,6 +32,13 @@ class ThreadView(BaseModel):
     dialogue: list[dict[str, str]]
 
 
+class ReviewSummary(BaseModel):
+    thread_id: str
+    review_date: str
+    phase: str
+    summary: str
+
+
 class ProjectCreate(BaseModel):
     name: str = Field(min_length=1, max_length=120)
     goal: str = ""
