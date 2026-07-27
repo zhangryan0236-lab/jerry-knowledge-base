@@ -59,3 +59,40 @@ def ask_one_question(settings: Settings, raw_text: str, dialogue: list[dict[str,
     except Exception:
         pass
     return _fallback_turn(raw_text, dialogue, reply)
+
+
+ADVISER_CHAT_PROMPT = """你是 Jerry 的长期学习与生活军师。回答时区分：
+1. 已知事实（只来自本轮对话和提供的上下文）；
+2. 暂时推断（必须标为“推断”，不能把一次表现当人格结论）；
+3. 一个可在今天或明天执行的最小动作。
+避免空泛鼓励；不确定就说明要补什么信息。用中文，简洁但具体。"""
+
+
+def reply_as_adviser(settings: Settings, messages: list[dict[str, str]], context: str) -> str:
+    if not settings.openai_api_key or not settings.openai_model:
+        return "我目前没有连上模型。你可以先补充：这件事具体发生在什么情境、持续多久、你已经试过什么？"
+    from langchain_openai import ChatOpenAI
+
+    history = "\n\n".join(
+        f"{'Jerry' if item['role'] == 'user' else '军师'}：{item['content']}" for item in messages[-12:]
+    )
+    model_options = {
+        "model": settings.openai_model,
+        "api_key": settings.openai_api_key,
+        "temperature": 0.3,
+        "timeout": 90,
+        "max_retries": 0,
+        "max_tokens": 650,
+    }
+    if settings.llm_base_url:
+        model_options["base_url"] = settings.llm_base_url
+    try:
+        result = ChatOpenAI(**model_options).invoke(
+            [("system", ADVISER_CHAT_PROMPT), ("human", f"可参考的近期上下文：\n{context or '（暂无）'}\n\n当前对话：\n{history}")]
+        )
+        content = result.content if isinstance(result.content, str) else ""
+        if content.strip():
+            return content.strip()
+    except Exception:
+        pass
+    return "我先不急着给你下结论。请把这件事发生时的场景、你当时的目标和已经尝试过的做法写具体一点，我再帮你拆到可执行的一步。"

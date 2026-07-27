@@ -36,3 +36,18 @@ def archive_organized(settings: Settings, thread: dict) -> Path:
     return _write_without_overwrite(
         settings.reviews_root / "整理记录", f"{thread['review_date']}-每日复盘.md", thread["id"][-8:], content
     )
+
+
+def archive_chat(settings: Settings, chat: dict) -> Path:
+    messages = "\n\n".join(
+        f"## {'Jerry' if item['role'] == 'user' else '军师'}\n\n{item['content']}"
+        for item in chat["messages"]
+    )
+    date = chat["created_at"][:10]
+    target = settings.chats_root / f"{date}-{chat['id'][-8:]}.md"
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(
+        f"---\ntags: [军师对话]\ncreated: {date}\nchat_id: {chat['id']}\n---\n\n# {chat['title']}\n\n{messages}\n",
+        encoding="utf-8",
+    )
+    return target

@@ -40,6 +40,36 @@ class ReviewSummary(BaseModel):
     summary: str
 
 
+class ChatCreateRequest(BaseModel):
+    text: str = Field(min_length=1, max_length=10000)
+
+
+class ChatMessageRequest(BaseModel):
+    text: str = Field(min_length=1, max_length=10000)
+
+
+class ChatMessageView(BaseModel):
+    id: str
+    role: Literal["user", "assistant"]
+    content: str
+    created_at: str
+
+
+class ChatView(BaseModel):
+    id: str
+    title: str
+    created_at: str
+    updated_at: str
+    messages: list[ChatMessageView]
+
+
+class ChatSummary(BaseModel):
+    id: str
+    title: str
+    updated_at: str
+    preview: str
+
+
 class ProjectCreate(BaseModel):
     name: str = Field(min_length=1, max_length=120)
     goal: str = ""

@@ -28,6 +28,10 @@ class Settings:
     def reviews_root(self) -> Path:
         return self.vault_path / "系统" / "3-方向盘" / "复盘系统" / "每日复盘"
 
+    @property
+    def chats_root(self) -> Path:
+        return self.vault_path / "系统" / "3-方向盘" / "复盘系统" / "军师对话"
+
 
 def get_settings() -> Settings:
     vault = Path(os.getenv("VAULT_PATH", APP_ROOT.parents[1])).resolve()

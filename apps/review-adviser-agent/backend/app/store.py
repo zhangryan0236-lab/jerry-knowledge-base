@@ -34,6 +34,28 @@ class ThreadStore:
             columns = {row[1] for row in conn.execute("PRAGMA table_info(review_threads)")}
             if "progress_note" not in columns:
                 conn.execute("ALTER TABLE review_threads ADD COLUMN progress_note TEXT")
+            conn.execute(
+                """
+                CREATE TABLE IF NOT EXISTS adviser_chats (
+                  id TEXT PRIMARY KEY,
+                  title TEXT NOT NULL,
+                  created_at TEXT NOT NULL,
+                  updated_at TEXT NOT NULL
+                )
+                """
+            )
+            conn.execute(
+                """
+                CREATE TABLE IF NOT EXISTS adviser_messages (
+                  id TEXT PRIMARY KEY,
+                  chat_id TEXT NOT NULL,
+                  role TEXT NOT NULL,
+                  content TEXT NOT NULL,
+                  created_at TEXT NOT NULL,
+                  FOREIGN KEY(chat_id) REFERENCES adviser_chats(id)
+                )
+                """
+            )
 
     def create(self, review_date: str, raw_text: str, raw_archive_path: str, thread_id: str | None = None, progress_note: str | None = None) -> dict:
         now = datetime.now(timezone.utc).isoformat()
@@ -112,3 +134,59 @@ class ThreadStore:
                 ),
             )
         return current
+
+    def create_chat(self, first_message: str) -> dict:
+        now = datetime.now(timezone.utc).isoformat()
+        chat = {
+            "id": f"chat_{uuid4().hex}",
+            "title": first_message.replace("\n", " ").strip()[:36] or "新的军师对话",
+            "created_at": now,
+            "updated_at": now,
+            "messages": [],
+        }
+        with sqlite3.connect(self.database_path) as conn:
+            conn.execute(
+                "INSERT INTO adviser_chats (id, title, created_at, updated_at) VALUES (?, ?, ?, ?)",
+                (chat["id"], chat["title"], now, now),
+            )
+        return chat
+
+    def append_chat_message(self, chat_id: str, role: str, content: str) -> dict:
+        now = datetime.now(timezone.utc).isoformat()
+        message = {"id": f"msg_{uuid4().hex}", "role": role, "content": content, "created_at": now}
+        with sqlite3.connect(self.database_path) as conn:
+            conn.execute(
+                "INSERT INTO adviser_messages (id, chat_id, role, content, created_at) VALUES (?, ?, ?, ?, ?)",
+                (message["id"], chat_id, role, content, now),
+            )
+            conn.execute("UPDATE adviser_chats SET updated_at=? WHERE id=?", (now, chat_id))
+        return message
+
+    def get_chat(self, chat_id: str) -> dict | None:
+        with sqlite3.connect(self.database_path) as conn:
+            conn.row_factory = sqlite3.Row
+            chat = conn.execute("SELECT * FROM adviser_chats WHERE id=?", (chat_id,)).fetchone()
+            if chat is None:
+                return None
+            messages = conn.execute(
+                "SELECT id, role, content, created_at FROM adviser_messages WHERE chat_id=? ORDER BY created_at", (chat_id,)
+            ).fetchall()
+        result = dict(chat)
+        result["messages"] = [dict(item) for item in messages]
+        return result
+
+    def list_chats(self, limit: int = 30) -> list[dict]:
+        with sqlite3.connect(self.database_path) as conn:
+            conn.row_factory = sqlite3.Row
+            rows = conn.execute(
+                """
+                SELECT c.id, c.title, c.updated_at, COALESCE(m.content, '') AS preview
+                FROM adviser_chats c
+                LEFT JOIN adviser_messages m ON m.id = (
+                  SELECT id FROM adviser_messages WHERE chat_id=c.id ORDER BY created_at DESC LIMIT 1
+                )
+                ORDER BY c.updated_at DESC LIMIT ?
+                """,
+                (limit,),
+            ).fetchall()
+        return [dict(row) for row in rows]

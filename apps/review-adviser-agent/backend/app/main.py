@@ -9,11 +9,12 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 
-from .archive import archive_organized, archive_raw
+from .archive import archive_chat, archive_organized, archive_raw
+from .brain import reply_as_adviser
 from .config import get_settings
 from .graph import build_review_graph
 from .progress import create_project, list_projects, sync_review_mentions, update_project
-from .schemas import CreateReviewRequest, ProjectCreate, ProjectUpdate, ProjectView, ReplyRequest, ReviewSummary, ThreadView
+from .schemas import ChatCreateRequest, ChatMessageRequest, ChatSummary, ChatView, CreateReviewRequest, ProjectCreate, ProjectUpdate, ProjectView, ReplyRequest, ReviewSummary, ThreadView
 from .store import ThreadStore
 
 
@@ -48,6 +49,12 @@ def to_view(thread: dict) -> ThreadView:
         progress_note=thread.get("progress_note"),
         dialogue=thread["dialogue"],
     )
+
+
+def chat_context() -> str:
+    review_lines = [f"- {item['review_date']}：{item['raw_text'].replace(chr(10), ' ')[:180]}" for item in store.list_recent(7)]
+    project_lines = [f"- {item['name']}：下一步 {item.get('next_action') or '未拆分'}" for item in list_projects(settings)[:5]]
+    return "近期复盘：\n" + ("\n".join(review_lines) or "（暂无）") + "\n\n近期项目：\n" + ("\n".join(project_lines) or "（暂无）")
 
 
 @app.get("/health")
@@ -115,6 +122,47 @@ def list_reviews() -> list[dict]:
         }
         for item in store.list_recent()
     ]
+
+
+@app.get("/api/chats", response_model=list[ChatSummary])
+def list_chats() -> list[dict]:
+    return store.list_chats()
+
+
+@app.get("/api/chats/{chat_id}", response_model=ChatView)
+def get_chat(chat_id: str) -> dict:
+    chat = store.get_chat(chat_id)
+    if chat is None:
+        raise HTTPException(status_code=404, detail="军师对话不存在")
+    return chat
+
+
+@app.post("/api/chats", response_model=ChatView)
+def create_chat(payload: ChatCreateRequest) -> dict:
+    chat = store.create_chat(payload.text)
+    store.append_chat_message(chat["id"], "user", payload.text)
+    current = store.get_chat(chat["id"])
+    assert current is not None
+    store.append_chat_message(chat["id"], "assistant", reply_as_adviser(settings, current["messages"], chat_context()))
+    current = store.get_chat(chat["id"])
+    assert current is not None
+    archive_chat(settings, current)
+    return current
+
+
+@app.post("/api/chats/{chat_id}/messages", response_model=ChatView)
+def send_chat_message(chat_id: str, payload: ChatMessageRequest) -> dict:
+    chat = store.get_chat(chat_id)
+    if chat is None:
+        raise HTTPException(status_code=404, detail="军师对话不存在")
+    store.append_chat_message(chat_id, "user", payload.text)
+    current = store.get_chat(chat_id)
+    assert current is not None
+    store.append_chat_message(chat_id, "assistant", reply_as_adviser(settings, current["messages"], chat_context()))
+    current = store.get_chat(chat_id)
+    assert current is not None
+    archive_chat(settings, current)
+    return current
 
 
 @app.get("/api/projects", response_model=list[ProjectView])

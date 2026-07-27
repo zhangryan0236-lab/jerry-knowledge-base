@@ -1,11 +1,14 @@
 import { useEffect, useMemo, useState } from 'react'
-import { BookOpen, BrainCircuit, CalendarDays, CheckCircle2, ChevronLeft, ChevronRight, Compass, FolderKanban, Sparkles } from 'lucide-react'
+import { BookOpen, BrainCircuit, CalendarDays, CheckCircle2, ChevronLeft, ChevronRight, Compass, FolderKanban, MessageCircle, Plus, Send, Sparkles } from 'lucide-react'
 import './App.css'
 
 type Review = { thread_id: string; review_date: string; phase: string; summary: string }
 type Thread = Review & { raw_text: string; response: string; question: string | null; dialogue: { role: string; content: string }[] }
+type ChatMessage = { id: string; role: 'user' | 'assistant'; content: string; created_at: string }
+type ChatView = { id: string; title: string; created_at: string; updated_at: string; messages: ChatMessage[] }
+type ChatSummary = { id: string; title: string; updated_at: string; preview: string }
 type Project = { id: string; name: string; next_action: string; status: string; evidence: unknown[] }
-type Page = 'review' | 'history' | 'projects' | 'profile'
+type Page = 'review' | 'chat' | 'history' | 'projects' | 'profile'
 
 const API = 'http://127.0.0.1:8766'
 const toKey = (date: Date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
@@ -16,19 +19,24 @@ export default function App() {
   const [month, setMonth] = useState(new Date())
   const [reviews, setReviews] = useState<Review[]>([])
   const [projects, setProjects] = useState<Project[]>([])
+  const [chats, setChats] = useState<ChatSummary[]>([])
   const [draft, setDraft] = useState('')
   const [activeThread, setActiveThread] = useState<Thread | null>(null)
   const [reply, setReply] = useState('')
   const [saving, setSaving] = useState(false)
   const [sendingReply, setSendingReply] = useState(false)
+  const [activeChat, setActiveChat] = useState<ChatView | null>(null)
+  const [chatInput, setChatInput] = useState('')
+  const [sendingChat, setSendingChat] = useState(false)
   const [message, setMessage] = useState('')
   const selectedKey = toKey(selected)
 
   const refresh = async () => {
-    const [reviewResponse, projectResponse] = await Promise.all([fetch(`${API}/api/reviews`), fetch(`${API}/api/projects`)])
-    if (!reviewResponse.ok || !projectResponse.ok) throw new Error('本地服务没有响应')
+    const [reviewResponse, projectResponse, chatResponse] = await Promise.all([fetch(`${API}/api/reviews`), fetch(`${API}/api/projects`), fetch(`${API}/api/chats`)])
+    if (!reviewResponse.ok || !projectResponse.ok || !chatResponse.ok) throw new Error('本地服务没有响应')
     setReviews(await reviewResponse.json())
     setProjects(await projectResponse.json())
+    setChats(await chatResponse.json())
   }
 
   useEffect(() => { refresh().catch(() => setMessage('本地数据服务尚未连接。请从桌面启动器打开应用。')) }, [])
@@ -71,6 +79,27 @@ export default function App() {
     } catch { setMessage('回复没有发送成功，请检查本地服务。') } finally { setSendingReply(false) }
   }
 
+  const openChat = async (chatId: string) => {
+    const response = await fetch(`${API}/api/chats/${chatId}`)
+    if (!response.ok) return setMessage('这段对话暂时无法读取。')
+    setActiveChat(await response.json() as ChatView)
+    setChatInput('')
+    go('chat')
+  }
+
+  const sendChat = async () => {
+    if (!chatInput.trim()) return
+    setSendingChat(true)
+    try {
+      const target = activeChat ? `${API}/api/chats/${activeChat.id}/messages` : `${API}/api/chats`
+      const response = await fetch(target, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text: chatInput }) })
+      if (!response.ok) throw new Error('chat failed')
+      setActiveChat(await response.json() as ChatView)
+      setChatInput('')
+      await refresh()
+    } catch { setMessage('军师暂时没有回复，请检查本地服务后重试。') } finally { setSendingChat(false) }
+  }
+
   const calendarDays = useMemo(() => {
     const year = month.getFullYear(), index = month.getMonth()
     const first = new Date(year, index, 1), start = new Date(year, index, 1 - first.getDay())
@@ -83,6 +112,7 @@ export default function App() {
       <div className="brand"><div className="brand-mark">J</div><div><b>复盘军师</b><small>JERRY · PRIVATE</small></div></div>
       <nav className="primary-nav" aria-label="主导航">
         <button className={page === 'review' ? 'active' : ''} onClick={() => go('review')}><BookOpen />复盘</button>
+        <button className={page === 'chat' ? 'active' : ''} onClick={() => go('chat')}><MessageCircle />军师对话</button>
         <button className={page === 'history' ? 'active' : ''} onClick={() => go('history')}><CalendarDays />历史</button>
         <button className={page === 'projects' ? 'active' : ''} onClick={() => go('projects')}><FolderKanban />进度</button>
         <button className={page === 'profile' ? 'active' : ''} onClick={() => go('profile')}><Compass />画像</button>
@@ -93,6 +123,7 @@ export default function App() {
     </aside>
     <main className="workspace">
       {page === 'review' && <section className="writer-view"><header className="page-head"><div><p>今日复盘</p><h1>把今天，讲给自己听。</h1></div><time>{new Intl.DateTimeFormat('zh-CN', { month: 'long', day: 'numeric', weekday: 'long' }).format(selected)}</time></header>{!activeThread ? <div className="writer-card"><div className="writer-meta"><span>原始记录</span><span>{selectedKey}</span></div><textarea value={draft} onChange={event => setDraft(event.target.value)} placeholder="不需要写得漂亮。今天实际做了什么？在哪里卡住？你当时是怎么应对的？明天最重要的第一步是什么？"/><footer><p>原文会被单独保存，军师整理不会覆盖它。</p><button disabled={saving} onClick={save}>{saving ? '军师正在思考…' : <>交给军师 <span>→</span></>}</button></footer></div> : <div className="conversation-card"><div className="conversation-title"><div><span>本次复盘</span><h2>{activeThread.review_date}</h2></div><button onClick={() => { setActiveThread(null); setReply(''); setMessage('') }}>新建记录</button></div><section className="raw-entry"><p>你的原始记录</p><div>{activeThread.raw_text}</div></section><section className="adviser-turn"><div className="turn-label"><BrainCircuit size={17}/>军师的追问</div><p>{activeThread.question || activeThread.response}</p>{activeThread.question ? <div className="reply-box"><textarea value={reply} onChange={event => setReply(event.target.value)} placeholder="写下你真实的回答，不需要组织得很完美。"/><button disabled={sendingReply || !reply.trim()} onClick={sendReply}>{sendingReply ? '军师正在思考…' : '继续 →'}</button></div> : <div className="organized-note"><CheckCircle2 size={17}/>这份复盘已经完成整理，本地归档已保留原始与整理版本。</div>}</section></div>}{message && <div className="message"><Sparkles size={16}/>{message}</div>}{selectedReview && !activeThread && <div className="archive-hint"><CheckCircle2 size={16}/><span>{selectedKey} 已有一份{selectedReview.phase === 'organized' ? '整理完成的' : '进行中的'}复盘。</span><button onClick={() => openReview(selectedReview.thread_id)}>继续这份复盘</button></div>}</section>}
+      {page === 'chat' && <section className="chat-view"><header className="page-head"><div><p>军师对话</p><h1>把问题摊开来谈。</h1></div><button className="new-chat" onClick={() => { setActiveChat(null); setChatInput(''); setMessage('') }}><Plus size={15}/>新对话</button></header><div className="chat-layout"><aside className="chat-list"><p>最近对话</p>{chats.length ? chats.map(chat => <button className={activeChat?.id === chat.id ? 'selected' : ''} key={chat.id} onClick={() => openChat(chat.id)}><b>{chat.title}</b><small>{chat.preview}</small></button>) : <span>还没有对话，从一个真实问题开始。</span>}</aside><section className="chat-room">{activeChat ? <><div className="chat-room-head"><span>{activeChat.title}</span><small>已保存到本地</small></div><div className="message-stream">{activeChat.messages.map(item => <article className={item.role} key={item.id}><span>{item.role === 'user' ? '你' : '军师'}</span><p>{item.content}</p></article>)}</div></> : <div className="chat-welcome"><BrainCircuit size={25}/><h2>今天，你想让军师帮你看清什么？</h2><p>这里可以自由讨论学习、决策、拖延和项目推进；不会被自动写进你的画像。</p></div>}<div className="chat-composer"><textarea value={chatInput} onChange={event => setChatInput(event.target.value)} placeholder={activeChat ? '继续说，军师会保留这段对话的上下文。' : '例如：我最近总想学很多东西，却无法判断现在最该做什么。'}/><button disabled={sendingChat || !chatInput.trim()} onClick={sendChat}>{sendingChat ? '军师正在思考…' : <><Send size={15}/>发送</>}</button></div></section></div>{message && <div className="message"><Sparkles size={16}/>{message}</div>}</section>}
       {page === 'history' && <section className="history-view"><header className="page-head"><div><p>复盘档案</p><h1>在时间里看见重复的信号。</h1></div><span className="count">已整理 {completed} 份</span></header><div className="history-grid"><section className="month-card"><div className="month-head"><button onClick={() => setMonth(new Date(month.getFullYear(), month.getMonth() - 1, 1))}><ChevronLeft size={18}/></button><b>{month.getFullYear()} 年 {month.getMonth() + 1} 月</b><button onClick={() => setMonth(new Date(month.getFullYear(), month.getMonth() + 1, 1))}><ChevronRight size={18}/></button></div><div className="week-labels">{['日','一','二','三','四','五','六'].map(day => <span key={day}>{day}</span>)}</div><div className="calendar-grid">{calendarDays.map(day => { const key = toKey(day), record = reviews.find(item => item.review_date === key), out = day.getMonth() !== month.getMonth(); return <button key={key} className={`${out ? 'outside ' : ''}${key === selectedKey ? 'selected ' : ''}${record ? 'has-record ' : ''}${record?.phase === 'organized' ? 'done' : ''}`} onClick={() => { setSelected(day); setActiveThread(null); setDraft(''); record ? openReview(record.thread_id) : go('review') }} title={record?.summary || `${key} 开始复盘`}>{day.getDate()}</button> })}</div><div className="legend"><span><i/>有记录</span><span><i className="done"/>已整理</span></div></section><section className="record-list"><h2>最近记录</h2>{reviews.length ? reviews.slice(0, 8).map(item => <button key={item.thread_id} onClick={() => { setSelected(new Date(`${item.review_date}T12:00:00`)); openReview(item.thread_id) }}><span>{item.review_date}</span><b>{item.summary}</b><small>{item.phase === 'organized' ? '已整理' : '进行中'}</small></button>) : <p>还没有复盘。第一份记录会从今天开始。</p>}</section></div></section>}
       {page === 'projects' && <section className="simple-view"><header className="page-head"><div><p>项目进度</p><h1>只看正在推进的事。</h1></div></header>{projects.length ? <div className="project-grid">{projects.map(project => <article key={project.id}><div><b>{project.name}</b><em>{project.status}</em></div><p>下一步：{project.next_action || '待拆分'}</p><small>完成证据 {project.evidence.length} 条</small></article>)}</div> : <div className="quiet-empty">复盘里提到正在推进的任务后，军师会提示你同步到这里。</div>}</section>}
       {page === 'profile' && <section className="simple-view"><header className="page-head"><div><p>个人画像</p><h1>只收录经得起时间检验的结论。</h1></div></header><div className="profile-note"><BrainCircuit size={23}/><div><b>画像还在建立中</b><p>一次表现不会成为标签。军师会在多天、多周的复盘中记录可验证的模式、有效条件与反例。</p></div></div></section>}
