@@ -7,7 +7,7 @@ const fs = require('node:fs');
 const root = path.resolve(__dirname, '..');
 const runtime = path.join(root, 'runtime');
 const backendEndpoint = 'http://127.0.0.1:8766';
-const frontendEndpoint = 'http://127.0.0.1:3000';
+const frontendEndpoint = 'http://127.0.0.1:5173';
 let backend;
 let frontend;
 let ownsBackend = false;
@@ -60,8 +60,8 @@ async function ensureBackend() {
 
 async function ensureFrontend() {
   if (await isHealthy(frontendEndpoint, '/')) return;
-  const templateDir = path.join(root, 'vendor', 'charlietlamb-calendar');
-  frontend = spawn('C:\\Program Files\\nodejs\\npm.cmd', ['run', 'dev', '--', '-p', '3000'], {
+  const templateDir = path.join(root, 'vendor', 'vinaya-journal', 'desktop');
+  frontend = spawn('C:\\Program Files\\nodejs\\npm.cmd', ['run', 'dev', '--', '--host', '127.0.0.1', '--port', '5173'], {
     cwd: templateDir,
     windowsHide: true,
     env: { ...process.env, npm_config_cache: path.join(runtime, 'cache', 'npm') },
@@ -70,7 +70,7 @@ async function ensureFrontend() {
     await new Promise(resolve => setTimeout(resolve, 500));
     if (await isHealthy(frontendEndpoint, '/')) return;
   }
-  throw new Error('日历界面没有成功启动。请检查模板依赖是否已安装。');
+  throw new Error('军师界面没有成功启动。请检查桌面界面的依赖是否已安装。');
 }
 
 async function createWindow() {

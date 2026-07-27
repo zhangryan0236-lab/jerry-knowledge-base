@@ -4,9 +4,9 @@ from .config import Settings
 from .schemas import QuestionTurn
 
 
-SYSTEM_PROMPT = """你是 Jerry 的复盘军师。只基于用户提供的事实回应。
-规则：先简短回应事实与感受；一次只问一个信息增益最高的问题；
-不要提前诊断、不要下人格结论、不要一次给多个建议。若信息已经足够或用户说“整理吧”，ready_to_organize=true。"""
+QUESTION_PROMPT = """你是 Jerry 的复盘军师。根据复盘内容提出一个唯一、具体、能改变后续判断的问题。
+只基于用户已经写下的事实；不得解释、不得给建议、不得下结论、不得问多个问题。
+只输出这个问题本身，必须以中文问号“？”结尾。"""
 
 
 def _fallback_turn(raw_text: str, dialogue: list[dict[str, str]], reply: str | None = None) -> QuestionTurn:
@@ -36,6 +36,26 @@ def ask_one_question(settings: Settings, raw_text: str, dialogue: list[dict[str,
         f"日期复盘原文：\n{raw_text}\n\n已确认问答：\n{history}\n\n"
         f"Jerry 最新回答：\n{reply or '（首次阅读原文）'}"
     )
-    model = ChatOpenAI(model=settings.openai_model, api_key=settings.openai_api_key, temperature=0.2)
-    structured = model.with_structured_output(QuestionTurn)
-    return structured.invoke([("system", SYSTEM_PROMPT), ("human", message)])
+    model_options = {
+        "model": settings.openai_model,
+        "api_key": settings.openai_api_key,
+        "temperature": 0.2,
+        "timeout": 90,
+        "max_retries": 0,
+        "max_tokens": 120,
+    }
+    if settings.llm_base_url:
+        model_options["base_url"] = settings.llm_base_url
+    model = ChatOpenAI(**model_options)
+    try:
+        result = model.invoke([("system", QUESTION_PROMPT), ("human", message)])
+        content = result.content if isinstance(result.content, str) else ""
+        question = content.strip().strip('“”"')
+        if question.endswith("？") and question.count("？") == 1 and len(question) <= 160:
+            response = "我先不急着解释原因。下面这个问题会决定后面该从哪里入手。"
+            if dialogue:
+                response = "我把刚才的线索接住了。再确认这一点，后面的分析才不会靠猜。"
+            return QuestionTurn(response=response, next_question=question, ready_to_organize=False)
+    except Exception:
+        pass
+    return _fallback_turn(raw_text, dialogue, reply)

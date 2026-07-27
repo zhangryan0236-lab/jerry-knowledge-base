@@ -6,10 +6,10 @@ if not exist "node_modules\electron\dist\electron.exe" (
   echo [首次启动] 正在安装桌面程序依赖...
   call npm install
 )
-if not exist "vendor\charlietlamb-calendar\node_modules\next\dist\bin\next" (
-  echo [首次启动] 正在安装日历模板依赖...
-  pushd "vendor\charlietlamb-calendar"
-  call npm install --legacy-peer-deps
+if not exist "vendor\vinaya-journal\desktop\node_modules\vite\bin\vite.js" (
+  echo [首次启动] 正在安装军师界面依赖...
+  pushd "vendor\vinaya-journal\desktop"
+  call npm install
   popd
 )
 call npm run desktop

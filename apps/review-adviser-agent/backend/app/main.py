@@ -32,7 +32,7 @@ async def lifespan(_: FastAPI):
 app = FastAPI(title="复盘军师 Agent", version="0.1.0", lifespan=lifespan)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://127.0.0.1:3000", "http://localhost:3000"],
+    allow_origins=["http://127.0.0.1:3000", "http://localhost:3000", "http://127.0.0.1:5173", "http://localhost:5173"],
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -42,6 +42,7 @@ app.mount("/assets", StaticFiles(directory=FRONTEND_DIR), name="assets")
 def to_view(thread: dict) -> ThreadView:
     return ThreadView(
         thread_id=thread["id"], review_date=thread["review_date"], phase=thread["phase"],
+        raw_text=thread["raw_text"],
         response=thread["response"], question=thread["question"],
         raw_archive_path=thread["raw_archive_path"], organized_archive_path=thread["organized_archive_path"],
         progress_note=thread.get("progress_note"),

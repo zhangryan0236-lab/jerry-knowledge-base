@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 
 APP_ROOT = Path(__file__).resolve().parents[2]
 load_dotenv(APP_ROOT / ".env")
+load_dotenv(APP_ROOT / "投放给军师" / "大模型的API.env", override=True)
 
 
 @dataclass(frozen=True)
@@ -17,6 +18,7 @@ class Settings:
     data_dir: Path
     openai_api_key: str | None
     openai_model: str | None
+    llm_base_url: str | None
 
     @property
     def database_path(self) -> Path:
@@ -34,6 +36,7 @@ def get_settings() -> Settings:
     return Settings(
         vault_path=vault,
         data_dir=data,
-        openai_api_key=os.getenv("OPENAI_API_KEY") or None,
-        openai_model=os.getenv("OPENAI_MODEL") or None,
+        openai_api_key=os.getenv("LLM_API_KEY") or os.getenv("OPENAI_API_KEY") or None,
+        openai_model=os.getenv("LLM_MODEL") or os.getenv("OPENAI_MODEL") or None,
+        llm_base_url=os.getenv("LLM_BASE_URL") or None,
     )

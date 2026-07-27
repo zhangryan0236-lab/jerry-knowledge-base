@@ -1,6 +1,9 @@
 runtime/
 node_modules/
+投放给军师/模型配置/llm.local.env
+投放给军师/大模型的API.env
 .env
 backend/.venv/
 frontend/node_modules/
 frontend/.next/
+backend/app/__pycache__/

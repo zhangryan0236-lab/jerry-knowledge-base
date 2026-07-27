@@ -23,6 +23,7 @@ class QuestionTurn(BaseModel):
 class ThreadView(BaseModel):
     thread_id: str
     review_date: str
+    raw_text: str
     phase: Literal["awaiting_reply", "organized"]
     response: str
     question: str | None

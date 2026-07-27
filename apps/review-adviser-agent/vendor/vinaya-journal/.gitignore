@@ -1,0 +1,17 @@
+*
+!.gitignore
+!LICENSE
+!desktop/
+desktop/*
+!desktop/index.html
+!desktop/package.json
+!desktop/package-lock.json
+!desktop/tsconfig.json
+!desktop/vite.config.ts
+!desktop/src/
+desktop/src/*
+!desktop/src/App.tsx
+!desktop/src/App.css
+!desktop/src/index.css
+!desktop/src/main.tsx
+!desktop/src/vite-env.d.ts
