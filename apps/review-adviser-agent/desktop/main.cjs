@@ -6,8 +6,10 @@ const fs = require('node:fs');
 
 const root = path.resolve(__dirname, '..');
 const runtime = path.join(root, 'runtime');
-const endpoint = 'http://127.0.0.1:8766';
+const backendEndpoint = 'http://127.0.0.1:8766';
+const frontendEndpoint = 'http://127.0.0.1:3000';
 let backend;
+let frontend;
 let ownsBackend = false;
 let mainWindow;
 
@@ -23,9 +25,9 @@ app.commandLine.appendSwitch('disk-cache-dir', path.join(runtime, 'desktop-disk-
 
 if (!app.requestSingleInstanceLock()) app.quit();
 
-function isHealthy() {
+function isHealthy(endpoint, pathName = '/health') {
   return new Promise(resolve => {
-    const request = http.get(`${endpoint}/health`, response => {
+    const request = http.get(`${endpoint}${pathName}`, response => {
       response.resume();
       resolve(response.statusCode === 200);
     });
@@ -35,7 +37,7 @@ function isHealthy() {
 }
 
 async function ensureBackend() {
-  if (await isHealthy()) return;
+  if (await isHealthy(backendEndpoint)) return;
   const python = path.join(runtime, 'venv', 'Scripts', 'python.exe');
   const backendDir = path.join(root, 'backend');
   backend = spawn(python, ['-m', 'uvicorn', 'app.main:app', '--app-dir', backendDir, '--host', '127.0.0.1', '--port', '8766'], {
@@ -51,14 +53,30 @@ async function ensureBackend() {
   ownsBackend = true;
   for (let attempt = 0; attempt < 30; attempt += 1) {
     await new Promise(resolve => setTimeout(resolve, 500));
-    if (await isHealthy()) return;
+    if (await isHealthy(backendEndpoint)) return;
   }
   throw new Error('本地军师服务没有成功启动。请检查 runtime 目录中的日志。');
+}
+
+async function ensureFrontend() {
+  if (await isHealthy(frontendEndpoint, '/')) return;
+  const templateDir = path.join(root, 'vendor', 'charlietlamb-calendar');
+  frontend = spawn('C:\\Program Files\\nodejs\\npm.cmd', ['run', 'dev', '--', '-p', '3000'], {
+    cwd: templateDir,
+    windowsHide: true,
+    env: { ...process.env, npm_config_cache: path.join(runtime, 'cache', 'npm') },
+  });
+  for (let attempt = 0; attempt < 50; attempt += 1) {
+    await new Promise(resolve => setTimeout(resolve, 500));
+    if (await isHealthy(frontendEndpoint, '/')) return;
+  }
+  throw new Error('日历界面没有成功启动。请检查模板依赖是否已安装。');
 }
 
 async function createWindow() {
   try {
     await ensureBackend();
+    await ensureFrontend();
     mainWindow = new BrowserWindow({
       width: 1360,
       height: 900,
@@ -68,7 +86,7 @@ async function createWindow() {
       backgroundColor: '#f4f2ed',
       webPreferences: { contextIsolation: true, nodeIntegration: false },
     });
-    await mainWindow.loadURL(endpoint);
+    await mainWindow.loadURL(frontendEndpoint);
   } catch (error) {
     dialog.showErrorBox('复盘军师未启动', error.message);
     app.quit();
@@ -82,4 +100,7 @@ app.on('second-instance', () => {
   mainWindow.focus();
 });
 app.on('window-all-closed', () => app.quit());
-app.on('before-quit', () => { if (ownsBackend && backend) backend.kill(); });
+app.on('before-quit', () => {
+  if (ownsBackend && backend) backend.kill();
+  if (frontend) frontend.kill();
+});

@@ -7,6 +7,7 @@ from uuid import uuid4
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
+from fastapi.middleware.cors import CORSMiddleware
 
 from .archive import archive_organized, archive_raw
 from .config import get_settings
@@ -29,6 +30,12 @@ async def lifespan(_: FastAPI):
 
 
 app = FastAPI(title="复盘军师 Agent", version="0.1.0", lifespan=lifespan)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://127.0.0.1:3000", "http://localhost:3000"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 app.mount("/assets", StaticFiles(directory=FRONTEND_DIR), name="assets")
 
 
